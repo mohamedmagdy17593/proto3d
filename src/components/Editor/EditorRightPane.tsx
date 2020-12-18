@@ -1,21 +1,20 @@
 /** @jsxImportSource @emotion/react */
 
-import { Canvas } from 'react-three-fiber';
-import { OrbitControls, Stars } from 'drei';
+import EditorHeader from './EditorHeader/EditorHeader';
+import EditorCanvas from './EditorCanvas/EditorCanvas';
 
 function EditorRightPane() {
   return (
-    <div css={{ height: '100%', width: '100%', padding: 12 }}>
-      <Canvas>
-        <ambientLight />
-        {/* <spotLight intensity={2} position={[10, 15, 10]} angle={0.3} /> */}
-        <OrbitControls />
-        <Stars />
-        <mesh>
-          <boxBufferGeometry args={[1, 1, 1]} />
-          <meshStandardMaterial color={'brown'} />
-        </mesh>
-      </Canvas>
+    <div
+      css={{
+        height: '100%',
+        width: '100%',
+        display: 'grid',
+        gridTemplateRows: '40px 1fr',
+      }}
+    >
+      <EditorHeader />
+      <EditorCanvas />
     </div>
   );
 }

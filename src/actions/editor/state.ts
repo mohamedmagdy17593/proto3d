@@ -5,16 +5,31 @@ export interface CanvasSettings {
   showStars: boolean;
 }
 
+export type ModelTypes = 'plane';
+
+export interface ModelBase {
+  id: string;
+  type: ModelTypes;
+}
+
+export interface PlaneModel extends ModelBase {
+  type: 'plane';
+}
+
+export type Model = PlaneModel;
+
 export interface EditorState {
   canvasSettings: CanvasSettings;
+  models: Model[];
 }
 
 export function initEditorState(): EditorState {
   return {
     canvasSettings: {
-      showAxis: false,
+      showAxis: true,
       showStars: false,
     },
+    models: [],
   };
 }
 

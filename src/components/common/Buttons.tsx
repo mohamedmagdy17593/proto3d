@@ -23,11 +23,12 @@ export function IconCircleButton({
 
 export const MODEL_BUTTON_SIZE = 56;
 
-interface ModelButtonProps {
+interface ModelButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   src: string;
   name: string;
 }
-export function ModelButton({ src, name }: ModelButtonProps) {
+export function ModelButton({ src, name, ...restProps }: ModelButtonProps) {
   return (
     <Tooltip title={name}>
       <button
@@ -55,6 +56,7 @@ export function ModelButton({ src, name }: ModelButtonProps) {
             transform: 'none',
           },
         }}
+        {...restProps}
       >
         <img
           width={MODEL_BUTTON_SIZE}

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { SettingOutlined } from '@ant-design/icons';
-import { setEditorState } from '../../../actions/editor/controls';
+import { setEditorState } from '../../../actions/editor/control';
 import { useEditorState } from '../../../actions/editor/state';
 import { IconCircleButton } from '../../common/Buttons';
 import { Form } from '../../common/Form';

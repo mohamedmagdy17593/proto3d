@@ -1,15 +1,22 @@
 /** @jsxImportSource @emotion/react */
 
 import { Canvas } from 'react-three-fiber';
-import { OrbitControls, Stars, Sphere } from 'drei';
+import { OrbitControls, Stars, Sphere, Plane } from 'drei';
 import { useEditorState } from '../../../actions/editor/state';
+import RenderModels from './RenderModels';
 
 function EditorCanvas() {
   let { canvasSettings } = useEditorState();
 
   return (
     <div css={{ width: '100%', height: '100%', overflow: 'hidden' }}>
-      <Canvas shadowMap camera={{ fov: 80, position: [5, 5, 5] }}>
+      <Canvas
+        shadowMap
+        camera={{
+          position: [5, 5, 5],
+          up: [0, 0, 1], // rotate around z axis
+        }}
+      >
         <OrbitControls />
         <ambientLight />
 
@@ -19,9 +26,11 @@ function EditorCanvas() {
 
         <pointLight castShadow intensity={0.8} position={[-2, 7, 7]} />
 
-        <Sphere args={[1.5, 50, 50]}>
+        <RenderModels />
+
+        {/* <Sphere args={[1.5, 50, 50]}>
           <meshStandardMaterial attach="material" color="#b55400" />
-        </Sphere>
+        </Sphere> */}
       </Canvas>
     </div>
   );

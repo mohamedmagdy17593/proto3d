@@ -1,12 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
 import { SettingOutlined } from '@ant-design/icons';
+import { setEditorState } from '../../../actions/editor/controls';
+import { useEditorState } from '../../../actions/editor/state';
 import { IconCircleButton } from '../../common/Buttons';
 import { Form } from '../../common/Form';
 import { Popover, Tooltip } from '../../common/Popover';
 import Switch from '../Controls/Switch';
 
 function CanvasSettingButton() {
+  let { canvasSettings } = useEditorState();
+
   return (
     <Popover
       title="Canvas Settings"
@@ -15,13 +19,17 @@ function CanvasSettingButton() {
           <Form>
             <Switch
               label="Show axis"
-              checked={true}
-              onChange={value => console.log(value)}
+              checked={canvasSettings.showAxis}
+              onChange={value =>
+                setEditorState('canvasSettings.showAxis', value)
+              }
             />
             <Switch
               label="Show Starts"
-              checked={true}
-              onChange={value => console.log(value)}
+              checked={canvasSettings.showStars}
+              onChange={value =>
+                setEditorState('canvasSettings.showStars', value)
+              }
             />
           </Form>
         </div>

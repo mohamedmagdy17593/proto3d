@@ -3,7 +3,6 @@
 
 import { Canvas, useResource } from 'react-three-fiber';
 import { OrbitControls, Stars, Sky } from 'drei';
-import { useSpring, animated } from 'react-spring/three';
 import { useState } from 'react';
 
 function Example() {
@@ -50,38 +49,34 @@ interface CubeProps {
 function Cube({ position }: CubeProps) {
   let [isBig, setIsBig] = useState(false);
 
-  let { scale } = useSpring({ scale: isBig ? [1.5, 1.5, 1.5] : [1, 1, 1] });
-
   return (
-    <animated.mesh
+    <mesh
       castShadow
       // @ts-ignore
-      scale={scale}
+
       position={position}
       onClick={() => setIsBig(f => !f)}
     >
       <boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
       <meshPhysicalMaterial attach="material" color="red" />
-    </animated.mesh>
+    </mesh>
   );
 }
 
 function Sphere({ position }: CubeProps) {
   let [isBig, setIsBig] = useState(false);
 
-  let { scale } = useSpring({ scale: isBig ? [1.5, 1.5, 1.5] : [1, 1, 1] });
-
   return (
-    <animated.mesh
+    <mesh
       castShadow
       // @ts-ignore
-      scale={scale}
+
       position={position}
       onClick={() => setIsBig(f => !f)}
     >
       <sphereBufferGeometry attach="geometry" args={[0.5, 50, 50]} />
       <meshPhongMaterial attach="material" color="red" />
-    </animated.mesh>
+    </mesh>
   );
 }
 

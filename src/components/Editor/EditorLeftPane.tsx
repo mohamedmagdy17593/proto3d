@@ -1,5 +1,7 @@
+import ModelBrowser from './ModelBrowser/ModelBrowser';
+
 function EditorLeftPane() {
-  return <div></div>;
+  return <ModelBrowser />;
 }
 
 export default EditorLeftPane;

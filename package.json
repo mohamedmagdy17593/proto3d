@@ -49,6 +49,16 @@
       "plugin:import/warnings",
       "plugin:import/typescript"
     ],
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "moduleDirectory": [
+            "node_modules",
+            "src/"
+          ]
+        }
+      }
+    },
     "rules": {
       "import/order": "warn"
     }

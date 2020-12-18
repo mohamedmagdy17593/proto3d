@@ -14,7 +14,7 @@ const EditorWrapper = styled('div')({
 function Editor() {
   return (
     <EditorWrapper>
-      <SplitPane split="vertical" minSize={100} defaultSize={250}>
+      <SplitPane split="vertical" minSize={148} maxSize={508} defaultSize={208}>
         <EditorLeftPane />
         <EditorRightPane />
       </SplitPane>

@@ -7,5 +7,15 @@ export const propertiesDefinitions: PropertiesDefinitions = {
       label: 'Name',
       inputType: 'text-field',
     },
+    {
+      key: 'color',
+      label: 'Color',
+      inputType: 'color-field',
+    },
+    {
+      key: 'size',
+      label: 'Size',
+      inputType: '2d-size-field',
+    },
   ],
 };

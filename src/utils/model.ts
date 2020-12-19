@@ -6,3 +6,12 @@ export function getModelName(type: string) {
   let name = `${titleCase(type)} ${count}`;
   return name;
 }
+
+export function getModelColor(type: string): string {
+  switch (type) {
+    case 'plane':
+      return '#393e46';
+    default:
+      return '#b55400';
+  }
+}

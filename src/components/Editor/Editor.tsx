@@ -2,7 +2,7 @@
 
 import styled from '@emotion/styled';
 import SplitPane from 'react-split-pane';
-import PropertyPanel from '../common/PropertyPanel';
+import PropertyPanel from './Property/PropertyPanel';
 import EditorLeftPane from './EditorLeftPane';
 import EditorRightPane from './EditorRightPane';
 

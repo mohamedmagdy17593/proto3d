@@ -4,14 +4,14 @@ import { useMemo } from 'react';
 import { Rnd } from 'react-rnd';
 import { Button } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
-import PropertyForm from '../Editor/Property/PropertyForm';
-import { propertiesDefinitions } from '../Editor/Property/definitions';
 import {
-  deleteModel,
+  deleteSelectedModel,
   updateModelProperties,
   useSelectedModel,
-} from '../../actions/editor/model';
-import { Tooltip } from './Popover';
+} from '../../../actions/editor/model';
+import { Tooltip } from '../../common/Popover';
+import PropertyForm from './PropertyForm';
+import { propertiesDefinitions } from './definitions';
 
 const WIDTH = 250;
 
@@ -28,7 +28,7 @@ function PropertyPanel() {
     <Rnd
       css={{
         border: '1px solid  var(--border-color-split)',
-        zIndex: 9999,
+        zIndex: 1000,
         background: 'var(--border-color-split)',
         boxShadow: 'var(--box-shadow-base)',
         overflow: 'hidden',
@@ -56,12 +56,12 @@ function PropertyPanel() {
           <div>
             <Tooltip title="Delete">
               <Button
-                css={{ marginRight: -6, border: 0 }}
+                css={{ marginRight: -6 }}
                 size="small"
+                type="link"
+                danger
                 onClick={() => {
-                  if (selectedModal) {
-                    deleteModel(selectedModal.id);
-                  }
+                  deleteSelectedModel();
                 }}
               >
                 <DeleteOutlined />

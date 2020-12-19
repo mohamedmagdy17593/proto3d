@@ -1,6 +1,8 @@
 import React from 'react';
 import { InputDefinition } from '../../../types/editor';
 import { Form } from '../../common/Form';
+import ColorField from './inputs/ColorField';
+import SizeField from './inputs/SizeField';
 import TextField from './inputs/TextField';
 
 interface PropertyFormProps {
@@ -43,6 +45,24 @@ function PropertyInput({
     case 'text-field': {
       return (
         <TextField
+          inputDefinition={inputDefinition}
+          properties={properties}
+          onChange={onChange}
+        />
+      );
+    }
+    case 'color-field': {
+      return (
+        <ColorField
+          inputDefinition={inputDefinition}
+          properties={properties}
+          onChange={onChange}
+        />
+      );
+    }
+    case '2d-size-field': {
+      return (
+        <SizeField
           inputDefinition={inputDefinition}
           properties={properties}
           onChange={onChange}

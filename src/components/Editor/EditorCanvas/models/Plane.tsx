@@ -7,8 +7,8 @@ interface PlaneProps {
 
 function Plane({ model }: PlaneProps) {
   return (
-    <DreiPlane args={[3, 3]}>
-      <meshStandardMaterial attach="material" color="#393e46" />
+    <DreiPlane args={model.size}>
+      <meshStandardMaterial attach="material" color={model.color} />
     </DreiPlane>
   );
 }

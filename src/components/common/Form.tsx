@@ -14,6 +14,9 @@ export function Form(props: FormProps) {
         '.ant-row.ant-form-item:last-child': {
           marginBottom: 0,
         },
+        '.ant-form-item-label': {
+          paddingBottom: 0,
+        },
       }}
       layout="vertical"
       size="small"

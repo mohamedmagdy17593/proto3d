@@ -1,9 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
 import { Canvas } from 'react-three-fiber';
-import { OrbitControls, Stars, Sphere, Plane } from 'drei';
+import { OrbitControls, Stars } from 'drei';
 import { useEditorState } from '../../../actions/editor/state';
-import PropertyPanel from '../../common/PropertyPanel';
 import RenderModels from './RenderModels';
 
 function EditorCanvas() {

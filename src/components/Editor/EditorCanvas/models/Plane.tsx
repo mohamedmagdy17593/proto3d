@@ -1,5 +1,5 @@
 import { Plane as DreiPlane } from 'drei';
-import { PlaneModel } from '../../../../actions/editor/state';
+import { PlaneModel } from '../../../../types/editor';
 
 interface PlaneProps {
   model: PlaneModel;

@@ -1,26 +1,15 @@
 import { proxy, useProxy } from 'valtio';
+import { Model } from '../../types/editor';
 
 export interface CanvasSettings {
   showAxis: boolean;
   showStars: boolean;
 }
 
-export type ModelTypes = 'plane';
-
-export interface ModelBase {
-  id: string;
-  type: ModelTypes;
-}
-
-export interface PlaneModel extends ModelBase {
-  type: 'plane';
-}
-
-export type Model = PlaneModel;
-
 export interface EditorState {
   canvasSettings: CanvasSettings;
   models: Model[];
+  selectedModelId: string | null;
 }
 
 export function initEditorState(): EditorState {
@@ -30,6 +19,7 @@ export function initEditorState(): EditorState {
       showStars: false,
     },
     models: [],
+    selectedModelId: null,
   };
 }
 

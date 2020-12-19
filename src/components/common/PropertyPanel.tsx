@@ -2,19 +2,23 @@
 
 import { useMemo } from 'react';
 import { Rnd } from 'react-rnd';
-
-const style = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  border: 'solid 1px #ddd',
-  background: '#f0f0f0',
-};
+import PropertyForm from '../Editor/Property/PropertyForm';
+import { propertiesDefinitions } from '../Editor/Property/definitions';
+import {
+  updateModelProperties,
+  useSelectedModel,
+} from '../../actions/editor/model';
 
 const WIDTH = 250;
 
 function PropertyPanel() {
   let initialX = useMemo(() => window.innerWidth - WIDTH - 12, []);
+
+  let selectedModal = useSelectedModel();
+
+  if (!selectedModal) {
+    return null;
+  }
 
   return (
     <Rnd
@@ -36,7 +40,9 @@ function PropertyPanel() {
       <div
         css={{ height: '100%', display: 'grid', gridTemplateRows: '32px 1fr' }}
       >
-        <div css={{ padding: '0 12px', lineHeight: '32px' }}>Plane</div>
+        <div css={{ padding: '0 12px', lineHeight: '32px' }}>
+          Properties ({selectedModal.name})
+        </div>
         <div
           className="PropertyPanel__undraggable-area" // used with cancel prop
           css={{
@@ -45,10 +51,15 @@ function PropertyPanel() {
             cursor: 'default',
           }}
         >
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Officia,
-          sapiente sequi dicta nisi nesciunt tempora facere natus, in accusamus
-          aperiam vel? Maiores esse odit obcaecati ab natus alias voluptates
-          earum.
+          <PropertyForm
+            inputDefinitions={propertiesDefinitions[selectedModal.type]}
+            properties={selectedModal}
+            onChange={newProperties => {
+              if (selectedModal) {
+                updateModelProperties(selectedModal.id, newProperties);
+              }
+            }}
+          />
         </div>
       </div>
     </Rnd>

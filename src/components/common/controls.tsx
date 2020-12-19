@@ -1,13 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { Form, Switch as AntdSwitch } from 'antd';
+import { Form, Switch as AntdSwitch, Input as AntdInput } from 'antd';
 
 interface SwitchProps {
   label: React.ReactNode;
   checked: boolean;
   onChange(checked: boolean): void;
 }
-
-function Switch({ label, checked, onChange }: SwitchProps) {
+export function Switch({ label, checked, onChange }: SwitchProps) {
   return (
     <Form.Item
       css={{
@@ -29,4 +28,15 @@ function Switch({ label, checked, onChange }: SwitchProps) {
   );
 }
 
-export default Switch;
+interface InputProps {
+  label: React.ReactNode;
+  value: string;
+  onChange(value: string): void;
+}
+export function Input({ label, value, onChange }: InputProps) {
+  return (
+    <Form.Item label={label}>
+      <AntdInput value={value} onChange={e => onChange(e.target.value)} />
+    </Form.Item>
+  );
+}

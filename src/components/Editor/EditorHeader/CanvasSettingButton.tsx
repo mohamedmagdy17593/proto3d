@@ -4,9 +4,9 @@ import { SettingOutlined } from '@ant-design/icons';
 import { setEditorState } from '../../../actions/editor/control';
 import { useEditorState } from '../../../actions/editor/state';
 import { IconCircleButton } from '../../common/Buttons';
+import { Switch } from '../../common/controls';
 import { Form } from '../../common/Form';
 import { Popover, Tooltip } from '../../common/Popover';
-import Switch from '../Controls/Switch';
 
 function CanvasSettingButton() {
   let { canvasSettings } = useEditorState();

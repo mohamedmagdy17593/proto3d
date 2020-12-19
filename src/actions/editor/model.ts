@@ -16,6 +16,7 @@ export function addModel(type: ModelTypes) {
     name: getModelName(type),
     color: getModelColor(type),
     size: [10, 10],
+    position: [0, 0, 0],
   });
   editorState.selectedModelId = id;
 }

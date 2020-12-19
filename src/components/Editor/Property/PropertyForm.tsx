@@ -2,6 +2,7 @@ import React from 'react';
 import { InputDefinition } from '../../../types/editor';
 import { Form } from '../../common/Form';
 import ColorField from './inputs/ColorField';
+import PositionField from './inputs/PositionField';
 import SizeField from './inputs/SizeField';
 import TextField from './inputs/TextField';
 
@@ -63,6 +64,15 @@ function PropertyInput({
     case '2d-size-field': {
       return (
         <SizeField
+          inputDefinition={inputDefinition}
+          properties={properties}
+          onChange={onChange}
+        />
+      );
+    }
+    case 'position': {
+      return (
+        <PositionField
           inputDefinition={inputDefinition}
           properties={properties}
           onChange={onChange}

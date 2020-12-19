@@ -8,16 +8,20 @@ import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons';
 import { InputDefinition } from '../../../../types/editor';
 import { Tooltip } from 'components/common/Popover';
 
-interface SizeFieldProps {
+interface PositionFieldProps {
   inputDefinition: InputDefinition;
   properties: any;
   onChange(properties: any): void;
 }
-function SizeField({ inputDefinition, properties, onChange }: SizeFieldProps) {
+function PositionField({
+  inputDefinition,
+  properties,
+  onChange,
+}: PositionFieldProps) {
   let value = properties[inputDefinition.key];
-  let [w, h] = value;
+  let [x, y, z] = value;
 
-  let [isLinked, setIsLinked] = useState(true);
+  let [isLinked, setIsLinked] = useState(false);
 
   function handleChange({
     index,
@@ -48,16 +52,23 @@ function SizeField({ inputDefinition, properties, onChange }: SizeFieldProps) {
       <Space>
         <InputNumber
           css={{ width: 50 }}
-          placeholder="W"
-          value={w}
+          placeholder="x"
+          value={x}
           onChange={number => handleChange({ index: 0, number })}
         />
         <InputNumber
           css={{ width: 50 }}
-          placeholder="H"
-          value={h}
+          placeholder="y"
+          value={y}
           onChange={number => handleChange({ index: 1, number })}
         />
+        <InputNumber
+          css={{ width: 50 }}
+          placeholder="z"
+          value={z}
+          onChange={number => handleChange({ index: 2, number })}
+        />
+
         <Tooltip title={isLinked ? 'Linked' : 'UnLinked'}>
           <Button
             onClick={() => setIsLinked(f => !f)}
@@ -69,4 +80,4 @@ function SizeField({ inputDefinition, properties, onChange }: SizeFieldProps) {
   );
 }
 
-export default SizeField;
+export default PositionField;

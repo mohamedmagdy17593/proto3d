@@ -17,5 +17,10 @@ export const propertiesDefinitions: PropertiesDefinitions = {
       label: 'Size',
       inputType: '2d-size-field',
     },
+    {
+      key: 'position',
+      label: 'Position',
+      inputType: 'position',
+    },
   ],
 };

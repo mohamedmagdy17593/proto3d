@@ -2,12 +2,16 @@
 
 import { useMemo } from 'react';
 import { Rnd } from 'react-rnd';
+import { Button } from 'antd';
+import { DeleteOutlined } from '@ant-design/icons';
 import PropertyForm from '../Editor/Property/PropertyForm';
 import { propertiesDefinitions } from '../Editor/Property/definitions';
 import {
+  deleteModel,
   updateModelProperties,
   useSelectedModel,
 } from '../../actions/editor/model';
+import { Tooltip } from './Popover';
 
 const WIDTH = 250;
 
@@ -40,8 +44,30 @@ function PropertyPanel() {
       <div
         css={{ height: '100%', display: 'grid', gridTemplateRows: '32px 1fr' }}
       >
-        <div css={{ padding: '0 12px', lineHeight: '32px' }}>
-          Properties ({selectedModal.name})
+        <div
+          css={{
+            padding: '0 12px',
+            lineHeight: '32px',
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+        >
+          <strong>{selectedModal.name}</strong>
+          <div>
+            <Tooltip title="Delete">
+              <Button
+                css={{ marginRight: -6, border: 0 }}
+                size="small"
+                onClick={() => {
+                  if (selectedModal) {
+                    deleteModel(selectedModal.id);
+                  }
+                }}
+              >
+                <DeleteOutlined />
+              </Button>
+            </Tooltip>
+          </div>
         </div>
         <div
           className="PropertyPanel__undraggable-area" // used with cancel prop

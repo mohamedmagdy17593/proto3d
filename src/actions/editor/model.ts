@@ -18,3 +18,7 @@ export function updateModelProperties(id: string, Properties: Partial<Model>) {
   let selectedModel = editorState.models.find(model => model.id === id);
   Object.assign(selectedModel, Properties);
 }
+
+export function deleteModel(id: string) {
+  editorState.models = editorState.models.filter(model => model.id !== id);
+}

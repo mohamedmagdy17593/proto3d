@@ -1,12 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
-import 'rc-color-picker/assets/index.css';
-
-import { Button, Form, InputNumber, Space } from 'antd';
-import { useState } from 'react';
-import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons';
+import { Form, InputNumber, Space } from 'antd';
 import { InputDefinition } from '../../../../types/editor';
-import { Tooltip } from 'components/common/Popover';
 import { useKeyPress } from 'utils/useKeyPress';
 
 const MIN = -360;
@@ -25,8 +20,6 @@ function RotationField({
   let value = properties[inputDefinition.key];
   let [x, y, z] = value;
 
-  let [isLinked, setIsLinked] = useState(false);
-
   let isShiftPressed = useKeyPress('Shift');
   let step = isShiftPressed ? 9 : 1;
 
@@ -39,19 +32,11 @@ function RotationField({
   }) {
     // @ts-ignore
     let num = parseInt(number);
-    if (!isNaN(num)) {
-      let arr = [...value];
-      if (isLinked) {
-        arr = arr.map((val, i) =>
-          Math.round(
-            index === i ? num : arr[index] === 0 ? 0 : (num * val) / arr[index],
-          ),
-        );
-      } else {
-        arr[index] = num;
-      }
-      onChange({ ...properties, [inputDefinition.key]: arr });
-    }
+    if (isNaN(num)) return;
+
+    let arr = [...value];
+    arr[index] = num;
+    onChange({ ...properties, [inputDefinition.key]: arr });
   }
 
   return (
@@ -82,12 +67,6 @@ function RotationField({
           min={MIN}
           max={MAX}
         />
-        <Tooltip title={isLinked ? 'Linked' : 'UnLinked'}>
-          <Button
-            onClick={() => setIsLinked(f => !f)}
-            icon={isLinked ? <LinkOutlined /> : <DisconnectOutlined />}
-          />
-        </Tooltip>
       </Space>
     </Form.Item>
   );

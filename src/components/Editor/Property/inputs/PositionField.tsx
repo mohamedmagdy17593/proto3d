@@ -2,11 +2,8 @@
 
 import 'rc-color-picker/assets/index.css';
 
-import { Button, Form, InputNumber, Space } from 'antd';
-import React, { useState } from 'react';
-import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons';
+import { Form, InputNumber, Space } from 'antd';
 import { InputDefinition } from '../../../../types/editor';
-import { Tooltip } from 'components/common/Popover';
 
 interface PositionFieldProps {
   inputDefinition: InputDefinition;
@@ -21,8 +18,6 @@ function PositionField({
   let value = properties[inputDefinition.key];
   let [x, y, z] = value;
 
-  let [isLinked, setIsLinked] = useState(false);
-
   function handleChange({
     index,
     number,
@@ -32,19 +27,11 @@ function PositionField({
   }) {
     // @ts-ignore
     let num = parseInt(number);
-    if (!isNaN(num)) {
-      let arr = [...value];
-      if (isLinked) {
-        arr = arr.map((val, i) =>
-          Math.round(
-            index === i ? num : arr[index] === 0 ? 0 : (num * val) / arr[index],
-          ),
-        );
-      } else {
-        arr[index] = num;
-      }
-      onChange({ ...properties, [inputDefinition.key]: arr });
-    }
+    if (isNaN(num)) return;
+
+    let arr = [...value];
+    arr[index] = num;
+    onChange({ ...properties, [inputDefinition.key]: arr });
   }
 
   return (
@@ -68,13 +55,6 @@ function PositionField({
           value={z}
           onChange={number => handleChange({ index: 2, number })}
         />
-
-        <Tooltip title={isLinked ? 'Linked' : 'UnLinked'}>
-          <Button
-            onClick={() => setIsLinked(f => !f)}
-            icon={isLinked ? <LinkOutlined /> : <DisconnectOutlined />}
-          />
-        </Tooltip>
       </Space>
     </Form.Item>
   );

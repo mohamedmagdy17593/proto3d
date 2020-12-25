@@ -6,6 +6,8 @@ import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons';
 import { InputDefinition } from '../../../../types/editor';
 import { Tooltip } from 'components/common/Popover';
 
+const MIN = 1;
+
 interface SizeFieldProps {
   inputDefinition: InputDefinition;
   properties: any;
@@ -53,12 +55,14 @@ function SizeField({
           placeholder="W"
           value={w}
           onChange={number => handleChange({ index: 0, number })}
+          min={MIN}
         />
         <InputNumber
           css={{ width: 50 }}
           placeholder="H"
           value={h}
           onChange={number => handleChange({ index: 1, number })}
+          min={MIN}
         />
         {type === '3d' && (
           <InputNumber
@@ -66,6 +70,7 @@ function SizeField({
             placeholder="D"
             value={d}
             onChange={number => handleChange({ index: 2, number })}
+            min={MIN}
           />
         )}
         <Tooltip title={isLinked ? 'Linked' : 'UnLinked'}>

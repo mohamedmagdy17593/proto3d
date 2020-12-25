@@ -56,6 +56,7 @@ function RotationField({
           placeholder="y°"
           value={y}
           onChange={number => handleChange({ index: 1, number })}
+          step={step}
           min={MIN}
           max={MAX}
         />
@@ -64,6 +65,7 @@ function RotationField({
           placeholder="z°"
           value={z}
           onChange={number => handleChange({ index: 2, number })}
+          step={step}
           min={MIN}
           max={MAX}
         />

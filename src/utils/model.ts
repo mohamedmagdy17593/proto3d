@@ -1,4 +1,5 @@
 import { titleCase } from 'tiny-case';
+import { Model, ModelTypes } from 'types/editor';
 
 let nameCounts: { [key: string]: number } = {};
 export function getModelName(type: string) {
@@ -7,11 +8,36 @@ export function getModelName(type: string) {
   return name;
 }
 
-export function getModelColor(type: string): string {
+interface CreateNewModelArg {
+  id: string;
+  type: ModelTypes;
+}
+export function createNewModel({ id, type }: CreateNewModelArg): Model {
   switch (type) {
-    case 'plane':
-      return '#393e46';
-    default:
-      return '#b55400';
+    case 'plane': {
+      return {
+        id,
+        type,
+        name: getModelName(type),
+        color: '#393e46',
+        size: [10, 10],
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+      };
+    }
+    case 'box': {
+      return {
+        id,
+        type,
+        name: getModelName(type),
+        color: '#b55400',
+        size: [1, 1, 1],
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+      };
+    }
+    default: {
+      throw Error(`unknown model Type ${type}`);
+    }
   }
 }

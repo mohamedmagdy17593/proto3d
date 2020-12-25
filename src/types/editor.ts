@@ -1,4 +1,4 @@
-export type ModelTypes = 'plane';
+export type ModelTypes = 'plane' | 'box';
 
 export interface ModelBase {
   id: string;
@@ -14,7 +14,12 @@ export interface PlaneModel extends ModelBase {
   size: [w: number, h: number];
 }
 
-export type Model = PlaneModel;
+export interface BoxModel extends ModelBase {
+  type: 'box';
+  size: [w: number, h: number, d: number];
+}
+
+export type Model = PlaneModel | BoxModel;
 
 export type InputType =
   | 'text-field'

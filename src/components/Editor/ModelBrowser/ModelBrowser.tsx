@@ -40,7 +40,11 @@ function ModelBrowser() {
             src={planeImage}
             onClick={() => addModel('plane')}
           />
-          <ModelButton name="Box" src={boxImage} />
+          <ModelButton
+            name="Box"
+            src={boxImage}
+            onClick={() => addModel('box')}
+          />
           <ModelButton name="Sphere" src={sphereImage} />
         </div>
       </Panel>

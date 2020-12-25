@@ -12,10 +12,16 @@ interface SizeFieldProps {
   inputDefinition: InputDefinition;
   properties: any;
   onChange(properties: any): void;
+  type?: '2d' | '3d';
 }
-function SizeField({ inputDefinition, properties, onChange }: SizeFieldProps) {
+function SizeField({
+  type = '2d',
+  inputDefinition,
+  properties,
+  onChange,
+}: SizeFieldProps) {
   let value = properties[inputDefinition.key];
-  let [w, h] = value;
+  let [w, h, d] = value;
 
   let [isLinked, setIsLinked] = useState(true);
 
@@ -58,6 +64,14 @@ function SizeField({ inputDefinition, properties, onChange }: SizeFieldProps) {
           value={h}
           onChange={number => handleChange({ index: 1, number })}
         />
+        {type === '3d' && (
+          <InputNumber
+            css={{ width: 50 }}
+            placeholder="D"
+            value={d}
+            onChange={number => handleChange({ index: 2, number })}
+          />
+        )}
         <Tooltip title={isLinked ? 'Linked' : 'UnLinked'}>
           <Button
             onClick={() => setIsLinked(f => !f)}

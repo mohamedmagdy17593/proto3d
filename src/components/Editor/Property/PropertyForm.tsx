@@ -70,6 +70,16 @@ function PropertyInput({
         />
       );
     }
+    case '3d-size-field': {
+      return (
+        <SizeField
+          type="3d"
+          inputDefinition={inputDefinition}
+          properties={properties}
+          onChange={onChange}
+        />
+      );
+    }
     case 'position': {
       return (
         <PositionField

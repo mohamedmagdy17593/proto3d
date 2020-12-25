@@ -1,4 +1,5 @@
 import { useEditorState } from '../../../actions/editor/state';
+import Box from './models/Box';
 import Plane from './models/Plane';
 
 function RenderModels() {
@@ -10,7 +11,11 @@ function RenderModels() {
           case 'plane': {
             return <Plane key={model.id} model={model} />;
           }
+          case 'box': {
+            return <Box key={model.id} model={model} />;
+          }
           default: {
+            // @ts-ignore
             throw Error(`model type ${model.type} is not supported`);
           }
         }

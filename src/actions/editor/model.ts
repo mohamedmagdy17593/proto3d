@@ -1,7 +1,7 @@
 import { nanoid } from 'nanoid';
 import { Model, ModelTypes } from '../../types/editor';
 import { editorState, useEditorState } from './state';
-import { getModelColor, getModelName } from 'utils/model';
+import { createNewModel } from 'utils/model';
 
 export function useSelectedModel() {
   let { selectedModelId, models } = useEditorState();
@@ -10,16 +10,9 @@ export function useSelectedModel() {
 
 export function addModel(type: ModelTypes) {
   let id = nanoid();
-  editorState.models.push({
-    id,
-    type,
-    name: getModelName(type),
-    color: getModelColor(type),
-    size: [10, 10],
-    position: [0, 0, 0],
-    rotation: [0, 0, 0],
-  });
-  editorState.selectedModelId = id;
+  let model = createNewModel({ id, type });
+  let models = [...editorState.models, model];
+  Object.assign(editorState, { models, selectedModelId: id });
 }
 
 export function updateModelProperties(id: string, Properties: Partial<Model>) {

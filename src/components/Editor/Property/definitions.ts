@@ -22,5 +22,10 @@ export const propertiesDefinitions: PropertiesDefinitions = {
       label: 'Position',
       inputType: 'position',
     },
+    {
+      key: 'rotation',
+      label: 'Rotation',
+      inputType: 'rotation',
+    },
   ],
 };

@@ -5,6 +5,7 @@ export interface ModelBase {
   name: string;
   color: string;
   position: [x: number, y: number, z: number];
+  rotation: [x: number, y: number, z: number];
   type: ModelTypes;
 }
 
@@ -20,7 +21,8 @@ export type InputType =
   | 'color-field'
   | '2d-size-field'
   | '3d-size-field'
-  | 'position';
+  | 'position'
+  | 'rotation';
 
 export interface InputDefinition {
   inputType: InputType;

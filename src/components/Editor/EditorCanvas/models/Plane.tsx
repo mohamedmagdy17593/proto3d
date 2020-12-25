@@ -1,5 +1,6 @@
 import { Plane as DreiPlane } from 'drei';
 import { PlaneModel } from '../../../../types/editor';
+import { degreeAnglesToRadians } from 'utils/editor';
 
 interface PlaneProps {
   model: PlaneModel;
@@ -7,7 +8,11 @@ interface PlaneProps {
 
 function Plane({ model }: PlaneProps) {
   return (
-    <DreiPlane args={model.size} position={model.position}>
+    <DreiPlane
+      args={model.size}
+      position={model.position}
+      rotation={degreeAnglesToRadians(model.rotation)}
+    >
       <meshStandardMaterial attach="material" color={model.color} />
     </DreiPlane>
   );

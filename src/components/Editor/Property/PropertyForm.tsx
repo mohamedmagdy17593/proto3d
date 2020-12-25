@@ -2,6 +2,7 @@ import { InputDefinition } from '../../../types/editor';
 import { Form } from '../../common/Form';
 import ColorField from './inputs/ColorField';
 import PositionField from './inputs/PositionField';
+import RotationField from './inputs/RotationField';
 import SizeField from './inputs/SizeField';
 import TextField from './inputs/TextField';
 
@@ -72,6 +73,15 @@ function PropertyInput({
     case 'position': {
       return (
         <PositionField
+          inputDefinition={inputDefinition}
+          properties={properties}
+          onChange={onChange}
+        />
+      );
+    }
+    case 'rotation': {
+      return (
+        <RotationField
           inputDefinition={inputDefinition}
           properties={properties}
           onChange={onChange}

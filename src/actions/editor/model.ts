@@ -8,6 +8,11 @@ export function useSelectedModel() {
   return models.find(model => model.id === selectedModelId);
 }
 
+export function useIsSelectedModel(model: Model) {
+  let { selectedModelId } = useEditorState();
+  return selectedModelId === model.id;
+}
+
 export function addModel(type: ModelTypes) {
   let id = nanoid();
   let model = createNewModel({ id, type });

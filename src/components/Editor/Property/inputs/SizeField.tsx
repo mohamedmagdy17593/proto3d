@@ -38,9 +38,7 @@ function SizeField({
 
     let arr = [...value];
     if (isLinked) {
-      arr = arr.map((val, i) =>
-        index === i ? num : arr[index] === 0 ? 0 : (num * val) / arr[index],
-      );
+      arr = arr.map((val, i) => (index === i ? num : (num * val) / arr[index]));
     } else {
       arr[index] = num;
     }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { InputDefinition } from '../../../types/editor';
 import { Form } from '../../common/Form';
 import ColorField from './inputs/ColorField';

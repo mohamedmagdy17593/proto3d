@@ -24,13 +24,9 @@ function EditorCanvas() {
 
         {canvasSettings.showStars && <Stars />}
 
-        <pointLight castShadow intensity={0.8} position={[-2, 7, 7]} />
+        <pointLight castShadow intensity={0.8} position={[0, 0, 5]} />
 
         <RenderModels />
-
-        {/* <Sphere args={[1.5, 50, 50]}>
-          <meshStandardMaterial attach="material" color="#b55400" />
-        </Sphere> */}
       </Canvas>
     </div>
   );

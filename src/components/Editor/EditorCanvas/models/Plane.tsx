@@ -1,7 +1,7 @@
 import { Plane as DreiPlane } from 'drei';
 import { useResource } from 'react-three-fiber';
 import { PlaneModel } from '../../../../types/editor';
-import { degreeAnglesToRadians } from 'utils/editor';
+import { useModelProps } from 'utils/editor';
 import { SelectEdge } from 'components/common/model-helpers';
 import { useIsSelectedModel } from 'actions/editor/model';
 
@@ -14,15 +14,12 @@ function Plane({ model }: PlaneProps) {
 
   let boxRef = useResource<any>();
 
+  let { meshProps, materialProps } = useModelProps(model);
+
   return (
     <>
-      <DreiPlane
-        ref={boxRef}
-        args={model.size}
-        position={model.position}
-        rotation={degreeAnglesToRadians(model.rotation)}
-      >
-        <meshStandardMaterial attach="material" color={model.color} />
+      <DreiPlane ref={boxRef} args={model.size} {...meshProps}>
+        <meshStandardMaterial {...materialProps} />
       </DreiPlane>
 
       {isSelected && <SelectEdge meshRef={boxRef} model={model} />}

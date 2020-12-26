@@ -1,5 +1,4 @@
-import { useLayoutEffect, useReducer } from 'react';
-import { useIsSelectedModel } from 'actions/editor/model';
+import { useLayoutEffect } from 'react';
 import { Model } from 'types/editor';
 import { degreeAnglesToRadians, isLight, useForceRender } from 'utils/editor';
 

@@ -31,3 +31,7 @@ export function deleteSelectedModel() {
   );
   Object.assign(editorState, { models, selectedModelId: null });
 }
+
+export function setSelectedModel(id: string) {
+  editorState.selectedModelId = id;
+}

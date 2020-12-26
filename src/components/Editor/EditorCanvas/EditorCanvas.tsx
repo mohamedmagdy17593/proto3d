@@ -17,7 +17,7 @@ function EditorCanvas() {
           up: [0, 0, 1], // rotate around z axis
         }}
       >
-        <OrbitControls />
+        {/* <OrbitControls /> */}
         <ambientLight />
 
         {canvasSettings.showAxis && <axesHelper args={[100]} />}

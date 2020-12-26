@@ -1,5 +1,7 @@
 import { useReducer } from 'react';
 import tinycolor from 'tinycolor2';
+import { TransformControls } from 'drei';
+import _ from 'lodash';
 import { setSelectedModel } from 'actions/editor/model';
 import { Model } from 'types/editor';
 
@@ -21,9 +23,10 @@ export function useForceRender() {
 
 export function useModelProps(model: Model) {
   let meshProps = {
-    position: model.position,
+    // position: model.position,
     rotation: degreeAnglesToRadians(model.rotation),
-    onClick() {
+    onClick(e: React.MouseEvent) {
+      e.stopPropagation();
       setSelectedModel(model.id);
     },
   };
@@ -37,4 +40,43 @@ export function useModelProps(model: Model) {
     meshProps,
     materialProps,
   };
+}
+
+export function showControlHelperUi(
+  controls: TransformControls,
+  show: boolean,
+) {
+  if (show) {
+    controls.showX = true;
+    controls.showY = true;
+    controls.showZ = true;
+  } else {
+    controls.showX = false;
+    controls.showY = false;
+    controls.showZ = false;
+  }
+}
+
+export function getControlsPosition(
+  controls: TransformControls,
+): [x: number, y: number, z: number] {
+  let { x, y, z } = controls.object!.position;
+  return [x, y, z];
+}
+
+export function setControlsPosition(
+  controls: TransformControls,
+  position: [x: number, y: number, z: number],
+) {
+  let [x, y, z] = position;
+  console.log({ x, y, z });
+  controls.object!.position.x = x;
+  controls.object!.position.y = y;
+  controls.object!.position.z = z;
+}
+
+export function isPointClose(point1: number[], point2: number[]) {
+  return _.zip(point1, point2).every(
+    ([num1, num2]) => Math.abs(num1! - num2!) < 0.05,
+  );
 }

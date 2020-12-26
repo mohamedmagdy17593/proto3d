@@ -3,7 +3,6 @@
 import 'rc-color-picker/assets/index.css';
 
 import { Form } from 'antd';
-import React from 'react';
 import ColorPicker from 'rc-color-picker';
 import _ from 'lodash';
 import { InputDefinition } from '../../../../types/editor';

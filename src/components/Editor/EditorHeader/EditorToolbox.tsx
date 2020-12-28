@@ -24,17 +24,17 @@ function EditorToolbox() {
         size="small"
         optionType="button"
       >
-        <Tooltip title="Move">
+        <Tooltip title="Move (M)">
           <Radio.Button value="translate">
             <FiMove />
           </Radio.Button>
         </Tooltip>
-        <Tooltip title="Resize">
+        <Tooltip title="Resize (S)">
           <Radio.Button value="scale">
             <GiResize />
           </Radio.Button>
         </Tooltip>
-        <Tooltip title="Rotate">
+        <Tooltip title="Rotate (R)">
           <Radio.Button value="rotate">
             <MdRotate90DegreesCcw />
           </Radio.Button>

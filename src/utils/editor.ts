@@ -57,22 +57,24 @@ export function showControlHelperUi(
   }
 }
 
-export function getControlsPosition(
+export function getControls(
   controls: TransformControls,
+  key: 'scale' | 'position' | 'rotation',
 ): [x: number, y: number, z: number] {
-  let { x, y, z } = controls.object!.position;
+  let { x, y, z } = controls.object![key];
   return [x, y, z];
 }
 
-export function setControlsPosition(
+export function setControls(
   controls: TransformControls,
-  position: [x: number, y: number, z: number],
+  key: 'scale' | 'position' | 'rotation',
+  value: [x: number, y: number, z: number],
 ) {
-  let [x, y, z] = position;
+  let [x, y, z] = value;
   console.log({ x, y, z });
-  controls.object!.position.x = x;
-  controls.object!.position.y = y;
-  controls.object!.position.z = z;
+  controls.object![key].x = x;
+  controls.object![key].y = y;
+  controls.object![key].z = z;
 }
 
 export function isPointClose(point1: number[], point2: number[]) {

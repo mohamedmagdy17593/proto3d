@@ -20,7 +20,7 @@ export function createNewModel({ id, type }: CreateNewModelArg): Model {
         type,
         name: getModelName(type),
         color: '#393e46',
-        size: [10, 10],
+        scale: [1, 1, 1],
         position: [0, 0, 0],
         rotation: [0, 0, 0],
       };
@@ -31,7 +31,7 @@ export function createNewModel({ id, type }: CreateNewModelArg): Model {
         type,
         name: getModelName(type),
         color: '#b55400',
-        size: [1, 1, 1],
+        scale: [1, 1, 1],
         position: [0, 0, 0],
         rotation: [0, 0, 0],
       };

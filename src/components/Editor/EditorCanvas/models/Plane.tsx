@@ -18,7 +18,7 @@ function Plane({ model }: PlaneProps) {
 
   return (
     <>
-      <DreiPlane ref={boxRef} args={model.size} {...meshProps}>
+      <DreiPlane ref={boxRef} {...meshProps}>
         <meshStandardMaterial {...materialProps} />
       </DreiPlane>
 

@@ -1,5 +1,5 @@
 import { proxy, useProxy } from 'valtio';
-import { Model } from '../../types/editor';
+import { Model, TransformMode } from '../../types/editor';
 
 export interface CanvasSettings {
   showAxis: boolean;
@@ -10,6 +10,7 @@ export interface EditorState {
   canvasSettings: CanvasSettings;
   models: Model[];
   selectedModelId: string | null;
+  transformMode: TransformMode;
 }
 
 export function initEditorState(): EditorState {
@@ -20,6 +21,7 @@ export function initEditorState(): EditorState {
     },
     models: [],
     selectedModelId: null,
+    transformMode: 'translate',
   };
 }
 

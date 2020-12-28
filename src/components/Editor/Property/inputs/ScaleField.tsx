@@ -1,29 +1,27 @@
 /** @jsxImportSource @emotion/react */
 
-import { Button, Form, InputNumber, Space } from 'antd';
-import { useState } from 'react';
-import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons';
+import { /* Button, */ Form, InputNumber, Space } from 'antd';
+// import { useState } from 'react';
+// import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons';
 import { InputDefinition } from '../../../../types/editor';
-import { Tooltip } from 'components/common/Popover';
+// import { Tooltip } from 'components/common/Popover';
 
 const MIN = 1;
 
-interface SizeFieldProps {
+interface ScaleFieldProps {
   inputDefinition: InputDefinition;
   properties: any;
   onChange(properties: any): void;
-  type?: '2d' | '3d';
 }
-function SizeField({
-  type = '2d',
+function ScaleField({
   inputDefinition,
   properties,
   onChange,
-}: SizeFieldProps) {
+}: ScaleFieldProps) {
   let value = properties[inputDefinition.key];
-  let [w, h, d] = value;
+  let [x, y, z] = value;
 
-  let [isLinked, setIsLinked] = useState(true);
+  // let [isLinked, setIsLinked] = useState(true);
 
   function handleChange({
     index,
@@ -37,11 +35,11 @@ function SizeField({
     if (isNaN(num)) return;
 
     let arr = [...value];
-    if (isLinked) {
-      arr = arr.map((val, i) => (index === i ? num : (num * val) / arr[index]));
-    } else {
-      arr[index] = num;
-    }
+    // if (isLinked) {
+    //   arr = arr.map((val, i) => (index === i ? num : (num * val) / arr[index]));
+    // } else {
+    arr[index] = num;
+    // }
     onChange({ ...properties, [inputDefinition.key]: arr });
   }
 
@@ -50,36 +48,34 @@ function SizeField({
       <Space>
         <InputNumber
           css={{ width: 50 }}
-          placeholder="W"
-          value={w}
+          placeholder="x"
+          value={x}
           onChange={number => handleChange({ index: 0, number })}
           min={MIN}
         />
         <InputNumber
           css={{ width: 50 }}
-          placeholder="H"
-          value={h}
+          placeholder="y"
+          value={y}
           onChange={number => handleChange({ index: 1, number })}
           min={MIN}
         />
-        {type === '3d' && (
-          <InputNumber
-            css={{ width: 50 }}
-            placeholder="D"
-            value={d}
-            onChange={number => handleChange({ index: 2, number })}
-            min={MIN}
-          />
-        )}
-        <Tooltip title={isLinked ? 'Linked' : 'UnLinked'}>
+        <InputNumber
+          css={{ width: 50 }}
+          placeholder="z"
+          value={z}
+          onChange={number => handleChange({ index: 2, number })}
+          min={MIN}
+        />
+        {/* <Tooltip title={isLinked ? 'Linked' : 'UnLinked'}>
           <Button
             onClick={() => setIsLinked(f => !f)}
             icon={isLinked ? <LinkOutlined /> : <DisconnectOutlined />}
           />
-        </Tooltip>
+        </Tooltip> */}
       </Space>
     </Form.Item>
   );
 }
 
-export default SizeField;
+export default ScaleField;

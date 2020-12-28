@@ -1,9 +1,10 @@
 import { InputDefinition } from '../../../types/editor';
 import { Form } from '../../common/Form';
 import ColorField from './inputs/ColorField';
+import DividerField from './inputs/DividerField';
 import PositionField from './inputs/PositionField';
 import RotationField from './inputs/RotationField';
-import SizeField from './inputs/SizeField';
+import ScaleField from './inputs/ScaleField';
 import TextField from './inputs/TextField';
 
 interface PropertyFormProps {
@@ -61,19 +62,9 @@ function PropertyInput({
         />
       );
     }
-    case '2d-size-field': {
+    case 'scale-field': {
       return (
-        <SizeField
-          inputDefinition={inputDefinition}
-          properties={properties}
-          onChange={onChange}
-        />
-      );
-    }
-    case '3d-size-field': {
-      return (
-        <SizeField
-          type="3d"
+        <ScaleField
           inputDefinition={inputDefinition}
           properties={properties}
           onChange={onChange}
@@ -92,6 +83,15 @@ function PropertyInput({
     case 'rotation': {
       return (
         <RotationField
+          inputDefinition={inputDefinition}
+          properties={properties}
+          onChange={onChange}
+        />
+      );
+    }
+    case 'divider': {
+      return (
+        <DividerField
           inputDefinition={inputDefinition}
           properties={properties}
           onChange={onChange}

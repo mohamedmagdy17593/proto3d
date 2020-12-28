@@ -1,4 +1,40 @@
-import { PropertiesDefinitions } from '../../../types/editor';
+import { PropertiesDefinitions, InputDefinition } from '../../../types/editor';
+
+const transformPropertiesDefinitions: InputDefinition[] = [
+  {
+    key: 'transform-divider',
+    label: 'Transform',
+    inputType: 'divider',
+  },
+  {
+    key: 'position',
+    label: 'Position',
+    inputType: 'position',
+  },
+  {
+    key: 'scale',
+    label: 'Scale',
+    inputType: 'scale-field',
+  },
+  {
+    key: 'rotation',
+    label: 'Rotation',
+    inputType: 'rotation',
+  },
+];
+
+const stylePropertiesDefinitions: InputDefinition[] = [
+  {
+    key: 'style-divider',
+    label: 'Style',
+    inputType: 'divider',
+  },
+  {
+    key: 'color',
+    label: 'Color',
+    inputType: 'color-field',
+  },
+];
 
 export const propertiesDefinitions: PropertiesDefinitions = {
   plane: [
@@ -7,26 +43,8 @@ export const propertiesDefinitions: PropertiesDefinitions = {
       label: 'Name',
       inputType: 'text-field',
     },
-    {
-      key: 'color',
-      label: 'Color',
-      inputType: 'color-field',
-    },
-    {
-      key: 'size',
-      label: 'Size',
-      inputType: '2d-size-field',
-    },
-    {
-      key: 'position',
-      label: 'Position',
-      inputType: 'position',
-    },
-    {
-      key: 'rotation',
-      label: 'Rotation',
-      inputType: 'rotation',
-    },
+    ...transformPropertiesDefinitions,
+    ...stylePropertiesDefinitions,
   ],
   box: [
     {
@@ -34,25 +52,7 @@ export const propertiesDefinitions: PropertiesDefinitions = {
       label: 'Name',
       inputType: 'text-field',
     },
-    {
-      key: 'color',
-      label: 'Color',
-      inputType: 'color-field',
-    },
-    {
-      key: 'size',
-      label: 'Size',
-      inputType: '3d-size-field',
-    },
-    {
-      key: 'position',
-      label: 'Position',
-      inputType: 'position',
-    },
-    {
-      key: 'rotation',
-      label: 'Rotation',
-      inputType: 'rotation',
-    },
+    ...transformPropertiesDefinitions,
+    ...stylePropertiesDefinitions,
   ],
 };

@@ -1,29 +1,21 @@
 import { Plane as DreiPlane } from 'drei';
-import { useResource } from 'react-three-fiber';
 import { PlaneModel } from '../../../../types/editor';
+import EditorTransformControls from '../EditorTransformControls';
 import { useModelProps } from 'utils/editor';
-import { SelectEdge } from 'components/common/model-helpers';
-import { useIsSelectedModel } from 'actions/editor/model';
 
 interface PlaneProps {
   model: PlaneModel;
 }
 
 function Plane({ model }: PlaneProps) {
-  let isSelected = useIsSelectedModel(model);
-
-  let boxRef = useResource<any>();
-
   let { meshProps, materialProps } = useModelProps(model);
 
   return (
-    <>
-      <DreiPlane ref={boxRef} {...meshProps}>
+    <EditorTransformControls model={model}>
+      <DreiPlane args={[15, 15]} {...meshProps}>
         <meshStandardMaterial {...materialProps} />
       </DreiPlane>
-
-      {isSelected && <SelectEdge meshRef={boxRef} model={model} />}
-    </>
+    </EditorTransformControls>
   );
 }
 

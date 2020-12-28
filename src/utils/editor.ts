@@ -23,8 +23,6 @@ export function useForceRender() {
 
 export function useModelProps(model: Model) {
   let meshProps = {
-    // position: model.position,
-    rotation: degreeAnglesToRadians(model.rotation),
     onClick(e: React.MouseEvent) {
       e.stopPropagation();
       setSelectedModel(model.id);

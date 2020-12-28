@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
-import { useMemo } from 'react';
+import { useRef } from 'react';
 import { Rnd } from 'react-rnd';
-import { Button } from 'antd';
+import { Button, Divider } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import {
   deleteSelectedModel,
@@ -12,17 +12,24 @@ import {
 import { Tooltip } from '../../common/Popover';
 import PropertyForm from './PropertyForm';
 import { propertiesDefinitions } from './definitions';
+import { setEditorState } from 'actions/editor/control';
 
 const WIDTH = 250;
 
 function PropertyPanel() {
-  let initialX = useMemo(() => window.innerWidth - WIDTH - 12, []);
+  let positionRef = useRef<{ x: number; y: number } | null>(null);
+  // initialize positionRef
+  if (!positionRef.current) {
+    positionRef.current = { x: window.innerWidth - WIDTH - 12, y: 50 };
+  }
 
   let selectedModal = useSelectedModel();
 
   if (!selectedModal) {
     return null;
   }
+
+  let { x, y } = positionRef.current;
 
   return (
     <Rnd
@@ -34,10 +41,13 @@ function PropertyPanel() {
         overflow: 'hidden',
       }}
       cancel={'.PropertyPanel__undraggable-area'}
+      onDragStop={(_, d) => {
+        positionRef.current = { x: d.x, y: d.y };
+      }}
       // @ts-ignore
       default={{
-        x: initialX,
-        y: 50,
+        x,
+        y,
         width: WIDTH,
       }}
     >
@@ -86,6 +96,17 @@ function PropertyPanel() {
               }
             }}
           />
+
+          {/* Deselect Model button */}
+          <Divider css={{ margin: '12px 0' }} dashed />
+          <Button
+            size="large"
+            block
+            type="dashed"
+            onClick={() => setEditorState('selectedModelId', null)}
+          >
+            Deselect
+          </Button>
         </div>
       </div>
     </Rnd>

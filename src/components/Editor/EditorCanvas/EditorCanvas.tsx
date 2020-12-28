@@ -27,7 +27,7 @@ function EditorCanvas() {
       <Canvas
         shadowMap
         camera={{
-          position: [5, 5, 5],
+          position: [10, 10, 4],
           up: [0, 0, 1], // rotate around z axis
         }}
       >

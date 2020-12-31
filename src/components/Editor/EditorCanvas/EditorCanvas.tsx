@@ -2,7 +2,7 @@
 
 import { Canvas } from 'react-three-fiber';
 import { OrbitControls, Stars } from 'drei';
-import { createContext, useContext, useEffect, useRef } from 'react';
+import { createContext, useContext, useRef } from 'react';
 import { useEditorState } from '../../../actions/editor/state';
 import RenderModels from './RenderModels';
 import { useCanvasPreventClickWhileDragging } from 'utils/editor';

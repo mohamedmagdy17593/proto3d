@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { TransformControls } from 'drei';
 import _ from 'lodash';
 import { Object3D } from 'three';
+import * as THREE from 'three';
 import { useEditorCanvas } from './EditorCanvas';
 import {
   updateModelProperties,
@@ -15,6 +16,7 @@ import {
   setControls,
   showControlHelperUi,
 } from 'utils/editor';
+import { useKeyPress } from 'utils/useKeyPress';
 
 const debouncedCb = _.debounce(fn => fn(), 300);
 
@@ -30,6 +32,7 @@ function EditorTransformControls({
   let isSelected = useIsSelectedModel(model);
   let { orbitRef } = useEditorCanvas();
   let { transformMode, transformControlSize } = useEditorState();
+  let isShiftPressed = useKeyPress('Shift');
 
   let transformRef = useRef<any>();
 
@@ -42,6 +45,19 @@ function EditorTransformControls({
     let controls: TransformControls = transformRef.current;
     controls.setSize?.(transformControlSize);
   }, [transformControlSize]);
+
+  useEffect(() => {
+    let controls: TransformControls = transformRef.current;
+    if (isShiftPressed) {
+      controls.setTranslationSnap?.(0.5);
+      controls.setRotationSnap?.(THREE.MathUtils.degToRad(15));
+      controls.setScaleSnap?.(0.25);
+    } else {
+      controls.setTranslationSnap?.(null);
+      controls.setRotationSnap?.(null);
+      controls.setScaleSnap?.(null);
+    }
+  }, [isShiftPressed]);
 
   // when dragging the object disable orbit control
   useEffect(() => {

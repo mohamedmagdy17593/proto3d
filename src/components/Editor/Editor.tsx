@@ -12,6 +12,9 @@ const EditorWrapper = styled('div')({
   height: '100%',
   overflow: 'hidden',
   '.Pane2': { overflow: 'hidden' },
+  '*': {
+    userSelect: 'none',
+  },
 });
 
 function Editor() {

@@ -11,6 +11,7 @@ export interface EditorState {
   models: Model[];
   selectedModelId: string | null;
   transformMode: TransformMode;
+  transformControlSize: number;
 }
 
 export function initEditorState(): EditorState {
@@ -22,6 +23,7 @@ export function initEditorState(): EditorState {
     models: [],
     selectedModelId: null,
     transformMode: 'translate',
+    transformControlSize: 1,
   };
 }
 

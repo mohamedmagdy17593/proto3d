@@ -29,7 +29,7 @@ function EditorTransformControls({
 }: EditorTransformControlsProps) {
   let isSelected = useIsSelectedModel(model);
   let { orbitRef } = useEditorCanvas();
-  let { transformMode } = useEditorState();
+  let { transformMode, transformControlSize } = useEditorState();
 
   let transformRef = useRef<any>();
 
@@ -37,6 +37,11 @@ function EditorTransformControls({
     let controls: TransformControls = transformRef.current;
     controls.setMode?.(transformMode);
   }, [transformMode]);
+
+  useEffect(() => {
+    let controls: TransformControls = transformRef.current;
+    controls.setSize?.(transformControlSize);
+  }, [transformControlSize]);
 
   // when dragging the object disable orbit control
   useEffect(() => {

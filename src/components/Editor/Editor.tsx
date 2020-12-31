@@ -5,6 +5,7 @@ import SplitPane from 'react-split-pane';
 import PropertyPanel from './Property/PropertyPanel';
 import EditorLeftPane from './EditorLeftPane';
 import EditorRightPane from './EditorRightPane';
+import useKeyboardGlobalKeys from './hooks/useKeyboardGlobalKeys';
 
 const EditorWrapper = styled('div')({
   width: '100%',
@@ -14,6 +15,8 @@ const EditorWrapper = styled('div')({
 });
 
 function Editor() {
+  useKeyboardGlobalKeys();
+
   return (
     <EditorWrapper>
       <PropertyPanel />

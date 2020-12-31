@@ -1,4 +1,5 @@
 import { Sphere as DreiSphere } from 'drei';
+import { useResource } from 'react-three-fiber';
 import { SphereModel } from '../../../../types/editor';
 import EditorTransformControls from '../EditorTransformControls';
 import { useModelProps } from 'utils/editor';
@@ -8,11 +9,17 @@ interface SphereProps {
 }
 
 function Sphere({ model }: SphereProps) {
-  let { meshProps, materialProps } = useModelProps(model);
+  let plane = useResource();
+
+  let { meshProps, materialProps } = useModelProps(model, { meshRef: plane });
 
   return (
     <EditorTransformControls model={model}>
-      <DreiSphere {...meshProps} args={[model.radius, ...model.segments]}>
+      <DreiSphere
+        {...meshProps}
+        args={[model.radius, ...model.segments]}
+        ref={plane}
+      >
         <meshStandardMaterial {...materialProps} />
       </DreiSphere>
     </EditorTransformControls>

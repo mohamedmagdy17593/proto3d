@@ -1,4 +1,6 @@
 import { Box as DreiBox } from 'drei';
+import { useResource } from 'react-three-fiber';
+
 import { BoxModel } from '../../../../types/editor';
 import EditorTransformControls from '../EditorTransformControls';
 import { useModelProps } from 'utils/editor';
@@ -8,11 +10,13 @@ interface BoxProps {
 }
 
 function Box({ model }: BoxProps) {
-  let { meshProps, materialProps } = useModelProps(model);
+  let box = useResource<any>();
+
+  let { meshProps, materialProps } = useModelProps(model, { meshRef: box });
 
   return (
     <EditorTransformControls model={model}>
-      <DreiBox {...meshProps}>
+      <DreiBox {...meshProps} ref={box}>
         <meshStandardMaterial {...materialProps} />
       </DreiBox>
     </EditorTransformControls>

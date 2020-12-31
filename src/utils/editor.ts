@@ -1,9 +1,9 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import tinycolor from 'tinycolor2';
 import { TransformControls } from 'drei';
 import _ from 'lodash';
 import * as THREE from 'three';
-import { setSelectedModel } from 'actions/editor/model';
+import { setSelectedModel, useIsSelectedModel } from 'actions/editor/model';
 import { Model } from 'types/editor';
 
 export function degreeAnglesToRadians<T extends number[]>(angles: T): T {
@@ -22,7 +22,40 @@ export function useForceRender() {
   return useReducer(() => ({}), {})[1];
 }
 
-export function useModelProps(model: Model) {
+interface UseModelPropsOptions {
+  meshRef: any;
+}
+export function useModelProps(model: Model, { meshRef }: UseModelPropsOptions) {
+  let isSelected = useIsSelectedModel(model);
+
+  // Select outline
+  useEffect(() => {
+    if (isSelected) {
+      let group: THREE.Group, outlineMesh: THREE.Mesh;
+
+      let timeout = setTimeout(() => {
+        if (!meshRef.current) {
+          return;
+        }
+
+        group = meshRef.current.parent;
+        let geometry = meshRef.current.geometry;
+        let outline = new THREE.MeshBasicMaterial({
+          color: 'white',
+          side: THREE.BackSide,
+        });
+        outlineMesh = new THREE.Mesh(geometry, outline);
+        outlineMesh.scale.multiplyScalar(1.05);
+        group.add(outlineMesh);
+      });
+
+      return () => {
+        clearTimeout(timeout);
+        group.remove(outlineMesh);
+      };
+    }
+  }, [meshRef, isSelected]);
+
   let meshProps = {
     onClick(e: React.MouseEvent) {
       e.stopPropagation();

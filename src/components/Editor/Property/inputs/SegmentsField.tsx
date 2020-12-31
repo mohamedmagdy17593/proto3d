@@ -1,22 +1,18 @@
 /** @jsxImportSource @emotion/react */
 
-import 'rc-color-picker/assets/index.css';
-
 import { Form, InputNumber, Space } from 'antd';
 import { InputDefinition } from '../../../../types/editor';
 
-interface PositionFieldProps {
+const MIN = 0;
+
+interface SegmentsProps {
   inputDefinition: InputDefinition;
   properties: any;
   onChange(properties: any): void;
 }
-function PositionField({
-  inputDefinition,
-  properties,
-  onChange,
-}: PositionFieldProps) {
+function Segments({ inputDefinition, properties, onChange }: SegmentsProps) {
   let value = properties[inputDefinition.key];
-  let [x, y, z] = value;
+  let [w, h] = value;
 
   function handleChange({
     index,
@@ -39,25 +35,21 @@ function PositionField({
       <Space>
         <InputNumber
           css={{ width: 80 }}
-          placeholder="x"
-          value={x}
+          placeholder="W"
+          value={w}
           onChange={number => handleChange({ index: 0, number })}
+          min={MIN}
         />
         <InputNumber
           css={{ width: 80 }}
-          placeholder="y"
-          value={y}
+          placeholder="H"
+          value={h}
           onChange={number => handleChange({ index: 1, number })}
-        />
-        <InputNumber
-          css={{ width: 80 }}
-          placeholder="z"
-          value={z}
-          onChange={number => handleChange({ index: 2, number })}
+          min={MIN}
         />
       </Space>
     </Form.Item>
   );
 }
 
-export default PositionField;
+export default Segments;

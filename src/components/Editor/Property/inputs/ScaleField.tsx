@@ -6,7 +6,7 @@ import { /* Button, */ Form, InputNumber, Space } from 'antd';
 import { InputDefinition } from '../../../../types/editor';
 // import { Tooltip } from 'components/common/Popover';
 
-const MIN = 1;
+const MIN = 0;
 
 interface ScaleFieldProps {
   inputDefinition: InputDefinition;
@@ -47,21 +47,21 @@ function ScaleField({
     <Form.Item label={inputDefinition.label}>
       <Space>
         <InputNumber
-          css={{ width: 50 }}
+          css={{ width: 80 }}
           placeholder="x"
           value={x}
           onChange={number => handleChange({ index: 0, number })}
           min={MIN}
         />
         <InputNumber
-          css={{ width: 50 }}
+          css={{ width: 80 }}
           placeholder="y"
           value={y}
           onChange={number => handleChange({ index: 1, number })}
           min={MIN}
         />
         <InputNumber
-          css={{ width: 50 }}
+          css={{ width: 80 }}
           placeholder="z"
           value={z}
           onChange={number => handleChange({ index: 2, number })}

@@ -1,4 +1,4 @@
-export type ModelTypes = 'plane' | 'box';
+export type ModelTypes = 'plane' | 'box' | 'sphere';
 
 export interface ModelBase {
   id: string;
@@ -18,22 +18,31 @@ export interface BoxModel extends ModelBase {
   type: 'box';
 }
 
-export type Model = PlaneModel | BoxModel;
+export interface SphereModel extends ModelBase {
+  type: 'sphere';
+  segments: [w: number, h: number];
+  radius: number;
+}
+
+export type Model = PlaneModel | BoxModel | SphereModel;
 
 export type InputType =
   | 'divider' // 🤓
   | 'text-field'
+  | 'number-field'
   | 'color-field'
   | 'scale-field'
   | 'position'
-  | 'rotation';
+  | 'rotation'
+  | 'segments';
 
 export type TransformMode = 'translate' | 'rotate' | 'scale';
 
-export interface InputDefinition {
+export interface InputDefinition<T extends string = string> {
   inputType: InputType;
-  key: string;
+  key: T;
   label: string;
+  placeholder?: string;
 }
 
 export type PropertiesDefinitions = {

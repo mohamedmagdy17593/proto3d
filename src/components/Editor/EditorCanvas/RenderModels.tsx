@@ -1,6 +1,7 @@
 import { useEditorState } from '../../../actions/editor/state';
 import Box from './models/Box';
 import Plane from './models/Plane';
+import Sphere from './models/Sphere';
 
 function RenderModels() {
   let { models } = useEditorState();
@@ -13,6 +14,9 @@ function RenderModels() {
           }
           case 'box': {
             return <Box key={model.id} model={model} />;
+          }
+          case 'sphere': {
+            return <Sphere key={model.id} model={model} />;
           }
           default: {
             // @ts-ignore

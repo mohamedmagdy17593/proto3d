@@ -55,4 +55,23 @@ export const propertiesDefinitions: PropertiesDefinitions = {
     ...transformPropertiesDefinitions,
     ...stylePropertiesDefinitions,
   ],
+  sphere: [
+    {
+      key: 'name',
+      label: 'Name',
+      inputType: 'text-field',
+    },
+    ...transformPropertiesDefinitions,
+    ...stylePropertiesDefinitions,
+    {
+      key: 'radius',
+      label: 'radius',
+      inputType: 'number-field',
+    },
+    {
+      key: 'segments',
+      label: 'segments',
+      inputType: 'segments',
+    },
+  ],
 };

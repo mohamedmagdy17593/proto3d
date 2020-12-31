@@ -4,6 +4,7 @@ import {
   decreaseControlsSize,
   increaseControlsSize,
 } from 'actions/editor/controls';
+import { deleteSelectedModel } from 'actions/editor/model';
 
 function useKeyboardGlobalKeys() {
   useEffect(() => {
@@ -35,6 +36,9 @@ function useKeyboardGlobalKeys() {
         case '_': {
           decreaseControlsSize();
           break;
+        }
+        case 'Backspace': {
+          deleteSelectedModel();
         }
       }
     };

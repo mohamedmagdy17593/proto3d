@@ -6,6 +6,8 @@ import PositionField from './inputs/PositionField';
 import RotationField from './inputs/RotationField';
 import ScaleField from './inputs/ScaleField';
 import TextField from './inputs/TextField';
+import SegmentsField from './inputs/SegmentsField';
+import NumberField from './inputs/NumberField';
 
 interface PropertyFormProps {
   inputDefinitions: InputDefinition[];
@@ -83,6 +85,24 @@ function PropertyInput({
     case 'rotation': {
       return (
         <RotationField
+          inputDefinition={inputDefinition as InputDefinition<'rotation'>}
+          properties={properties}
+          onChange={onChange}
+        />
+      );
+    }
+    case 'segments': {
+      return (
+        <SegmentsField
+          inputDefinition={inputDefinition}
+          properties={properties}
+          onChange={onChange}
+        />
+      );
+    }
+    case 'number-field': {
+      return (
+        <NumberField
           inputDefinition={inputDefinition}
           properties={properties}
           onChange={onChange}

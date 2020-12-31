@@ -36,6 +36,19 @@ export function createNewModel({ id, type }: CreateNewModelArg): Model {
         rotation: [0, 0, 0],
       };
     }
+    case 'sphere': {
+      return {
+        id,
+        type,
+        name: getModelName(type),
+        color: '#b55400',
+        scale: [1, 1, 1],
+        position: [0, 0, 0],
+        rotation: [0, 0, 0],
+        segments: [15, 15],
+        radius: 1,
+      };
+    }
     default: {
       throw Error(`unknown model Type ${type}`);
     }

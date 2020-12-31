@@ -45,12 +45,16 @@ function ModelBrowser() {
             src={boxImage}
             onClick={() => addModel('box')}
           />
-          <ModelButton name="Sphere" src={sphereImage} />
+          <ModelButton
+            name="Sphere"
+            src={sphereImage}
+            onClick={() => addModel('sphere')}
+          />
         </div>
       </Panel>
 
       <Panel header="Models" key="Models">
-        <Input placeholder={`Search 🔎`} />
+        <Input placeholder={`Search`} />
         <div css={{ height: 200, display: 'grid', placeItems: 'center' }}>
           <p css={{ opacity: 0.5, textAlign: 'center' }}>
             Not Found come back latter

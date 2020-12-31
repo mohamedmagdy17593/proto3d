@@ -1,23 +1,24 @@
 /** @jsxImportSource @emotion/react */
 
 import { Form, InputNumber, Space } from 'antd';
-import { InputDefinition } from '../../../../types/editor';
+import { InputDefinition, Model } from '../../../../types/editor';
 import { useKeyPress } from 'utils/useKeyPress';
+import { degreeAnglesToRadians, radiansAnglesToDegree } from 'utils/editor';
 
 const MIN = -360;
 const MAX = 360;
 
 interface RotationFieldProps {
-  inputDefinition: InputDefinition;
-  properties: any;
-  onChange(properties: any): void;
+  inputDefinition: InputDefinition<'rotation'>;
+  properties: Model;
+  onChange(properties: Model): void;
 }
 function RotationField({
   inputDefinition,
   properties,
   onChange,
 }: RotationFieldProps) {
-  let value = properties[inputDefinition.key];
+  let value = degreeAnglesToRadians(properties[inputDefinition.key]);
   let [x, y, z] = value;
 
   let isShiftPressed = useKeyPress('Shift');
@@ -34,16 +35,19 @@ function RotationField({
     let num = parseInt(number);
     if (isNaN(num)) return;
 
-    let arr = [...value];
+    let arr: [x: number, y: number, z: number] = [...value];
     arr[index] = num;
-    onChange({ ...properties, [inputDefinition.key]: arr });
+    onChange({
+      ...properties,
+      [inputDefinition.key]: radiansAnglesToDegree(arr),
+    });
   }
 
   return (
     <Form.Item label={inputDefinition.label}>
       <Space>
         <InputNumber
-          css={{ width: 50 }}
+          css={{ width: 80 }}
           placeholder="x°"
           value={x}
           onChange={number => handleChange({ index: 0, number })}
@@ -52,7 +56,7 @@ function RotationField({
           max={MAX}
         />
         <InputNumber
-          css={{ width: 50 }}
+          css={{ width: 80 }}
           placeholder="y°"
           value={y}
           onChange={number => handleChange({ index: 1, number })}
@@ -61,7 +65,7 @@ function RotationField({
           max={MAX}
         />
         <InputNumber
-          css={{ width: 50 }}
+          css={{ width: 80 }}
           placeholder="z°"
           value={z}
           onChange={number => handleChange({ index: 2, number })}

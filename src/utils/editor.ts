@@ -2,15 +2,16 @@ import { useReducer } from 'react';
 import tinycolor from 'tinycolor2';
 import { TransformControls } from 'drei';
 import _ from 'lodash';
+import * as THREE from 'three';
 import { setSelectedModel } from 'actions/editor/model';
 import { Model } from 'types/editor';
 
 export function degreeAnglesToRadians<T extends number[]>(angles: T): T {
-  return angles.map(degreeAngleToRadian) as T;
+  return angles.map(THREE.MathUtils.radToDeg) as T;
 }
 
-export function degreeAngleToRadian(angle: number) {
-  return (angle / 180) * Math.PI;
+export function radiansAnglesToDegree<T extends number[]>(angles: T): T {
+  return angles.map(THREE.MathUtils.degToRad) as T;
 }
 
 export function isLight(color: any) {

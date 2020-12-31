@@ -24,10 +24,15 @@ export function useForceRender() {
 
 interface UseModelPropsOptions {
   meshRef: any;
+  reRenderGeometryDeps?: any;
 }
-export function useModelProps(model: Model, { meshRef }: UseModelPropsOptions) {
+export function useModelProps(
+  model: Model,
+  { meshRef, reRenderGeometryDeps }: UseModelPropsOptions,
+) {
   let isSelected = useIsSelectedModel(model);
 
+  let outlineColor = isLight(model.color) ? 'black' : 'white';
   // Select outline
   useEffect(() => {
     if (isSelected) {
@@ -41,7 +46,7 @@ export function useModelProps(model: Model, { meshRef }: UseModelPropsOptions) {
         group = meshRef.current.parent;
         let geometry = meshRef.current.geometry;
         let outline = new THREE.MeshBasicMaterial({
-          color: 'white',
+          color: outlineColor,
           side: THREE.BackSide,
         });
         outlineMesh = new THREE.Mesh(geometry, outline);
@@ -54,7 +59,12 @@ export function useModelProps(model: Model, { meshRef }: UseModelPropsOptions) {
         group.remove(outlineMesh);
       };
     }
-  }, [meshRef, isSelected]);
+  }, [
+    meshRef,
+    isSelected,
+    outlineColor,
+    reRenderGeometryDeps, // for external deps
+  ]);
 
   let meshProps = {
     onClick(e: React.MouseEvent) {

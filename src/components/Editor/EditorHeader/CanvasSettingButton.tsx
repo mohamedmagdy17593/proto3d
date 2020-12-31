@@ -1,8 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { SettingOutlined } from '@ant-design/icons';
-import { setEditorState } from '../../../actions/editor/control';
-import { useEditorState } from '../../../actions/editor/state';
+import { editorState, useEditorState } from '../../../actions/editor/state';
 import { IconCircleButton } from '../../common/Buttons';
 import { Switch } from '../../common/controls';
 import { Form } from '../../common/Form';
@@ -20,16 +19,12 @@ function CanvasSettingButton() {
             <Switch
               label="Show axis"
               checked={canvasSettings.showAxis}
-              onChange={value =>
-                setEditorState('canvasSettings.showAxis', value)
-              }
+              onChange={value => (editorState.canvasSettings.showAxis = value)}
             />
             <Switch
               label="Show Starts"
               checked={canvasSettings.showStars}
-              onChange={value =>
-                setEditorState('canvasSettings.showStars', value)
-              }
+              onChange={value => (editorState.canvasSettings.showStars = value)}
             />
           </Form>
         </div>

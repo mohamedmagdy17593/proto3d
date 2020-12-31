@@ -5,8 +5,7 @@ import { FiMove } from 'react-icons/fi';
 import { GiResize } from 'react-icons/gi';
 import { MdRotate90DegreesCcw } from 'react-icons/md';
 import { Tooltip } from 'components/common/Popover';
-import { useEditorState } from 'actions/editor/state';
-import { setEditorState } from 'actions/editor/control';
+import { editorState, useEditorState } from 'actions/editor/state';
 
 function EditorToolbox() {
   let { transformMode } = useEditorState();
@@ -20,7 +19,7 @@ function EditorToolbox() {
           },
         }}
         value={transformMode}
-        onChange={e => setEditorState('transformMode', e.target.value)}
+        onChange={e => (editorState.transformMode = e.target.value)}
         size="small"
         optionType="button"
       >

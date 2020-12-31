@@ -12,7 +12,7 @@ import {
 import { Tooltip } from '../../common/Popover';
 import PropertyForm from './PropertyForm';
 import { propertiesDefinitions } from './definitions';
-import { setEditorState } from 'actions/editor/control';
+import { editorState } from 'actions/editor/state';
 
 const WIDTH = 250;
 
@@ -103,7 +103,7 @@ function PropertyPanel() {
             size="large"
             block
             type="dashed"
-            onClick={() => setEditorState('selectedModelId', null)}
+            onClick={() => (editorState.selectedModelId = null)}
           >
             Deselect
           </Button>

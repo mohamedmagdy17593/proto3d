@@ -2,9 +2,10 @@
 
 import { Canvas } from 'react-three-fiber';
 import { OrbitControls, Stars } from 'drei';
-import { createContext, useContext, useRef } from 'react';
+import { createContext, useContext, useEffect, useRef } from 'react';
 import { useEditorState } from '../../../actions/editor/state';
 import RenderModels from './RenderModels';
+import { useCanvasPreventClickWhileDragging } from 'utils/editor';
 
 interface EditorCanvasContextProps {
   orbitRef: React.RefObject<OrbitControls>;
@@ -20,10 +21,18 @@ function EditorCanvas() {
 
   let orbitRef = useRef<OrbitControls>(null);
 
-  let editorCanvasContextValue = { orbitRef };
+  let canvasContainerRef = useRef<HTMLDivElement>(null);
+  useCanvasPreventClickWhileDragging({ canvasContainerRef });
+
+  let editorCanvasContextValue = {
+    orbitRef,
+  };
 
   return (
-    <div css={{ width: '100%', height: '100%', overflow: 'hidden' }}>
+    <div
+      ref={canvasContainerRef}
+      css={{ width: '100%', height: '100%', overflow: 'hidden' }}
+    >
       <Canvas
         shadowMap
         camera={{

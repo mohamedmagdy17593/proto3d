@@ -114,3 +114,62 @@ export function isPointClose(point1: number[], point2: number[]) {
     ([num1, num2]) => Math.abs(num1! - num2!) < 0.05,
   );
 }
+
+const DRAG_MOUSE_THRESHOLD = 2;
+
+interface UseCanvasPreventClickWhileDraggingArg {
+  canvasContainerRef: React.RefObject<HTMLDivElement>;
+}
+export function useCanvasPreventClickWhileDragging({
+  canvasContainerRef,
+}: UseCanvasPreventClickWhileDraggingArg) {
+  useEffect(() => {
+    let canvas = canvasContainerRef.current?.querySelector('canvas');
+    if (!canvas) {
+      return;
+    }
+
+    let isDragging = false;
+    let downMousePosition: { clientX: number; clientY: number };
+
+    let preventClick = (event: Event) => {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+    };
+
+    let mousedownHandler = (e: MouseEvent) => {
+      let { clientX, clientY } = e;
+      downMousePosition = { clientX, clientY };
+      canvas?.addEventListener('mousemove', mousemoveHandler);
+    };
+
+    let mouseupHandler = () => {
+      if (isDragging) {
+        canvas?.addEventListener('click', preventClick);
+      } else {
+        canvas?.removeEventListener('click', preventClick);
+      }
+      isDragging = false;
+      canvas?.removeEventListener('mousemove', mousemoveHandler);
+    };
+
+    let mousemoveHandler = (e: MouseEvent) => {
+      let { clientX, clientY } = e;
+      let { clientX: downClientX, clientY: downClientY } = downMousePosition;
+      let movingDistance = Math.sqrt(
+        (downClientX - clientX) ** 2 + (downClientY - clientY) ** 2,
+      );
+      if (movingDistance > DRAG_MOUSE_THRESHOLD) {
+        isDragging = true;
+      }
+    };
+
+    canvas.addEventListener('mousedown', mousedownHandler);
+    canvas.addEventListener('mouseup', mouseupHandler);
+    return () => {
+      canvas?.removeEventListener('mousedown', mousedownHandler);
+      canvas?.removeEventListener('mouseup', mouseupHandler);
+      canvas?.removeEventListener('mousemove', mousemoveHandler);
+    };
+  }, [canvasContainerRef]);
+}

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
-import Logo from '../../Logo';
 import EditorHeaderControllers from './EditorHeaderControllers';
+import EditorHeaderControllersRightSide from './EditorHeaderControllersRightSide';
 
 function EditorHeader() {
   return (
@@ -15,7 +15,7 @@ function EditorHeader() {
       }}
     >
       <EditorHeaderControllers />
-      <Logo />
+      <EditorHeaderControllersRightSide />
     </div>
   );
 }

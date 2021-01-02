@@ -2,7 +2,8 @@
 
 import { Canvas } from 'react-three-fiber';
 import { OrbitControls, Stars } from 'drei';
-import { createContext, useContext, useRef } from 'react';
+import { createContext, useContext, useEffect, useRef } from 'react';
+import * as THREE from 'three';
 import { useEditorState } from '../../../actions/editor/state';
 import RenderModels from './RenderModels';
 import { useCanvasPreventClickWhileDragging } from 'utils/editor';
@@ -15,6 +16,9 @@ const EditorCanvasContext = createContext({} as EditorCanvasContextProps);
 export function useEditorCanvas() {
   return useContext(EditorCanvasContext);
 }
+
+// function for download
+export let download3dCanvas: () => void;
 
 function EditorCanvas() {
   let { canvasSettings } = useEditorState();
@@ -34,6 +38,27 @@ function EditorCanvas() {
       css={{ width: '100%', height: '100%', overflow: 'hidden' }}
     >
       <Canvas
+        onCreated={({ gl, scene, camera }) => {
+          // reassign
+          download3dCanvas = () => {
+            gl.render(scene, camera);
+            gl.outputEncoding = THREE.sRGBEncoding;
+            // @ts-ignore
+            gl.preserveDrawingBuffer = true;
+            gl.domElement.toBlob(
+              function (blob) {
+                var a = document.createElement('a');
+                var url = URL.createObjectURL(blob);
+                a.href = url;
+                a.download = 'canvas.jpg';
+                a.click();
+                console.log('function is actually being used');
+              },
+              'image/jpg',
+              1.0,
+            );
+          };
+        }}
         shadowMap
         camera={{
           position: [10, 10, 4],

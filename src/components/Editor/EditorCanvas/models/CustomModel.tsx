@@ -22,7 +22,9 @@ function CustomModel({ model }: CustomModelProps) {
 
   return (
     <EditorTransformControls model={model}>
-      <primitive object={object} {...meshProps} ref={primitive} />
+      <group {...meshProps} ref={primitive}>
+        <primitive object={object} />
+      </group>
     </EditorTransformControls>
   );
 }

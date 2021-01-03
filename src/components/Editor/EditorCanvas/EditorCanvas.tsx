@@ -2,7 +2,7 @@
 
 import { Canvas } from 'react-three-fiber';
 import { OrbitControls, Stars } from 'drei';
-import { createContext, useContext, useRef } from 'react';
+import { createContext, Suspense, useContext, useRef } from 'react';
 import * as THREE from 'three';
 import { useEditorState } from '../../../actions/editor/state';
 import RenderModels from './RenderModels';
@@ -50,11 +50,11 @@ function EditorCanvas() {
                 var a = document.createElement('a');
                 var url = URL.createObjectURL(blob);
                 a.href = url;
-                a.download = 'canvas.jpg';
+                a.download = 'proto3d.png';
                 a.click();
                 console.log('function is actually being used');
               },
-              'image/jpg',
+              'image/png',
               1.0,
             );
           };
@@ -75,7 +75,9 @@ function EditorCanvas() {
 
           <pointLight castShadow intensity={0.8} position={[0, 0, 5]} />
 
-          <RenderModels />
+          <Suspense fallback={null}>
+            <RenderModels />
+          </Suspense>
         </EditorCanvasContext.Provider>
       </Canvas>
     </div>

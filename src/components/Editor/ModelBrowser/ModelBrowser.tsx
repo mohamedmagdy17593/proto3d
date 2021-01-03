@@ -1,15 +1,21 @@
 /** @jsxImportSource @emotion/react */
 
 import { Collapse, Input } from 'antd';
-import React from 'react';
+import styled from '@emotion/styled';
 import { ModelButton, MODEL_BUTTON_SIZE } from '../../common/Buttons';
-
 import { addModel } from '../../../actions/editor/model';
 import boxImage from 'images/models/box.png';
 import sphereImage from 'images/models/sphere.png';
 import planeImage from 'images/models/plane.png';
+import PUBLIC_MODELS from 'public-models';
 
 const { Panel } = Collapse;
+
+const ModelButtonsGrid = styled('div')({
+  display: 'grid',
+  gridTemplateColumns: `repeat(auto-fill, ${MODEL_BUTTON_SIZE}px)`,
+  gap: 4,
+});
 
 function ModelBrowser() {
   return (
@@ -28,13 +34,7 @@ function ModelBrowser() {
       ghost
     >
       <Panel header="Primitives" key="Primitives">
-        <div
-          css={{
-            display: 'grid',
-            gridTemplateColumns: `repeat(auto-fill, ${MODEL_BUTTON_SIZE}px)`,
-            gap: 4,
-          }}
-        >
+        <ModelButtonsGrid>
           <ModelButton
             name="Plane"
             src={planeImage}
@@ -50,16 +50,35 @@ function ModelBrowser() {
             src={sphereImage}
             onClick={() => addModel('sphere')}
           />
-        </div>
+        </ModelButtonsGrid>
       </Panel>
 
       <Panel header="Models" key="Models">
         <Input placeholder={`Search`} />
-        <div css={{ height: 200, display: 'grid', placeItems: 'center' }}>
+
+        <ModelButtonsGrid>
+          {PUBLIC_MODELS.map(modelData => {
+            return (
+              <ModelButton
+                key={modelData.name}
+                name={modelData.name}
+                src={modelData.imageUrl}
+                onClick={() => {
+                  addModel('custom', {
+                    modelUrl: modelData.modelUrl,
+                    name: modelData.name,
+                  });
+                }}
+              />
+            );
+          })}
+        </ModelButtonsGrid>
+
+        {/* <div css={{ height: 200, display: 'grid', placeItems: 'center' }}>
           <p css={{ opacity: 0.5, textAlign: 'center' }}>
             Not Found come back latter
           </p>
-        </div>
+        </div> */}
       </Panel>
     </Collapse>
   );

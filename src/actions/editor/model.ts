@@ -13,9 +13,16 @@ export function useIsSelectedModel(model: Model) {
   return selectedModelId === model.id;
 }
 
-export function addModel(type: ModelTypes) {
+interface AddModelArgs {
+  modelUrl?: string;
+  name?: string;
+}
+export function addModel(
+  type: ModelTypes,
+  { modelUrl, name }: AddModelArgs = {},
+) {
   let id = nanoid();
-  let model = createNewModel({ id, type });
+  let model = createNewModel({ id, type, modelUrl, name });
   let models = [...editorState.models, model];
   Object.assign(editorState, { models, selectedModelId: id });
 }

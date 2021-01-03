@@ -2,9 +2,11 @@ import { useEditorState } from '../../../actions/editor/state';
 import Box from './models/Box';
 import Plane from './models/Plane';
 import Sphere from './models/Sphere';
+import CustomModel from './models/CustomModel';
 
 function RenderModels() {
   let { models } = useEditorState();
+
   return (
     <>
       {models.map(model => {
@@ -17,6 +19,9 @@ function RenderModels() {
           }
           case 'sphere': {
             return <Sphere key={model.id} model={model} />;
+          }
+          case 'custom': {
+            return <CustomModel key={model.id} model={model} />;
           }
           default: {
             // @ts-ignore

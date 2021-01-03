@@ -61,8 +61,6 @@ export const propertiesDefinitions: PropertiesDefinitions = {
       label: 'Name',
       inputType: 'text-field',
     },
-    ...transformPropertiesDefinitions,
-    ...stylePropertiesDefinitions,
     {
       key: 'radius',
       label: 'radius',
@@ -73,5 +71,16 @@ export const propertiesDefinitions: PropertiesDefinitions = {
       label: 'segments',
       inputType: 'segments',
     },
+    ...transformPropertiesDefinitions,
+    ...stylePropertiesDefinitions,
+  ],
+  custom: [
+    {
+      key: 'name',
+      label: 'Name',
+      inputType: 'text-field',
+    },
+    ...transformPropertiesDefinitions,
+    ...stylePropertiesDefinitions,
   ],
 };

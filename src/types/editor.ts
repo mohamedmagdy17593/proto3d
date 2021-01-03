@@ -1,4 +1,4 @@
-export type ModelTypes = 'plane' | 'box' | 'sphere';
+export type ModelTypes = 'plane' | 'box' | 'sphere' | 'custom';
 
 export interface ModelBase {
   id: string;
@@ -24,7 +24,12 @@ export interface SphereModel extends ModelBase {
   radius: number;
 }
 
-export type Model = PlaneModel | BoxModel | SphereModel;
+export interface CustomModel extends ModelBase {
+  type: 'custom';
+  modelUrl: string;
+}
+
+export type Model = PlaneModel | BoxModel | SphereModel | CustomModel;
 
 export type InputType =
   | 'divider' // 🤓

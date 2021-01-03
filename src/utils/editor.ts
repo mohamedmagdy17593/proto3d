@@ -113,7 +113,6 @@ export function setControls(
   value: [x: number, y: number, z: number],
 ) {
   let [x, y, z] = value;
-  console.log({ x, y, z });
   controls.object![key].x = x;
   controls.object![key].y = y;
   controls.object![key].z = z;

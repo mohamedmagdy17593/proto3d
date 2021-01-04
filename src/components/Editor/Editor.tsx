@@ -6,8 +6,10 @@ import PropertyPanel from './Property/PropertyPanel';
 import EditorLeftPane from './EditorLeftPane';
 import EditorRightPane from './EditorRightPane';
 import useKeyboardGlobalKeys from './hooks/useKeyboardGlobalKeys';
+import HelpButton from './HelpButton';
 
 const EditorWrapper = styled('div')({
+  position: 'relative',
   width: '100%',
   height: '100%',
   overflow: 'hidden',
@@ -27,6 +29,7 @@ function Editor() {
         <EditorLeftPane />
         <EditorRightPane />
       </SplitPane>
+      <HelpButton />
     </EditorWrapper>
   );
 }

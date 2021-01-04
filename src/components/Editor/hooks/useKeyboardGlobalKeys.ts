@@ -12,11 +12,12 @@ function useKeyboardGlobalKeys() {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       // undo and redo key bindings
-      if (isCmdOrCtrlPressed(e) && e.shiftKey && e.key === 'z') {
+      let isCmdZ = isCmdOrCtrlPressed(e) && (e.key === 'z' || e.key === 'Z');
+      if (isCmdZ && e.shiftKey) {
         e.preventDefault();
         (e.target as any)?.blur?.();
         redo();
-      } else if (isCmdOrCtrlPressed(e) && e.key === 'z') {
+      } else if (isCmdZ) {
         e.preventDefault();
         (e.target as any)?.blur?.();
         undo();
@@ -29,15 +30,18 @@ function useKeyboardGlobalKeys() {
       }
 
       switch (e.key) {
-        case 'm': {
+        case 'm':
+        case 'M': {
           editorState.transformMode = 'translate';
           break;
         }
-        case 's': {
+        case 's':
+        case 'S': {
           editorState.transformMode = 'scale';
           break;
         }
-        case 'r': {
+        case 'r':
+        case 'R': {
           editorState.transformMode = 'rotate';
           break;
         }
@@ -51,7 +55,8 @@ function useKeyboardGlobalKeys() {
           decreaseControlsSize();
           break;
         }
-        case 'Backspace': {
+        case 'Backspace':
+        case 'Delete': {
           deleteSelectedModel();
           break;
         }

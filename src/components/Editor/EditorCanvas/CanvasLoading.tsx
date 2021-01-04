@@ -11,13 +11,16 @@ function CanvasLoading() {
         right: 0,
         left: 0,
         bottom: 0,
-        background: 'rgba(0,0,0,80%)',
+        background: 'rgba(0,0,0,50%)',
         zIndex: 10,
         display: 'grid',
         placeItems: 'center',
       }}
     >
-      <Spin size="large" />
+      <Spin
+        css={{ '.ant-spin-dot-item': { backgroundColor: 'white' } }}
+        size="large"
+      />
     </div>
   );
 }

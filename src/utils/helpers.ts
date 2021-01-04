@@ -5,3 +5,5 @@ export function isCmdOrCtrlPressed(e: KeyboardEvent) {
 export function isMac() {
   return /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform);
 }
+
+export const commandKeyText = isMac() ? 'Cmd' : 'Ctrl';

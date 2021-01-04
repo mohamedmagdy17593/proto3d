@@ -7,7 +7,7 @@ interface HistoryEditorState {
   selectedModelId: EditorState['selectedModelId'];
 }
 
-// using class for testing valtio with class
+// using class for testing valtio with classes
 class HistoryManager {
   undoStack: HistoryEditorState[] = [];
   redoStack: HistoryEditorState[] = [];

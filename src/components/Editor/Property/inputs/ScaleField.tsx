@@ -40,7 +40,7 @@ function ScaleField({
     // } else {
     arr[index] = num;
     // }
-    onChange({ ...properties, [inputDefinition.key]: arr });
+    onChange({ [inputDefinition.key]: arr });
   }
 
   return (

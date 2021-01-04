@@ -11,7 +11,7 @@ function TextField({ inputDefinition, properties, onChange }: TextFieldProps) {
   let value = properties[inputDefinition.key];
 
   function handleChange(value: string) {
-    onChange({ ...properties, [inputDefinition.key]: value });
+    onChange({ [inputDefinition.key]: value });
   }
 
   return (

@@ -27,7 +27,7 @@ function Segments({ inputDefinition, properties, onChange }: SegmentsProps) {
 
     let arr = [...value];
     arr[index] = num;
-    onChange({ ...properties, [inputDefinition.key]: arr });
+    onChange({ [inputDefinition.key]: arr });
   }
 
   return (

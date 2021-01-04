@@ -24,9 +24,7 @@ function NumberField({
         css={{ width: 80 }}
         placeholder={placeholder}
         value={value}
-        onChange={number =>
-          onChange({ ...properties, [inputDefinition.key]: number })
-        }
+        onChange={number => onChange({ [inputDefinition.key]: number })}
         min={MIN}
       />
     </Form.Item>

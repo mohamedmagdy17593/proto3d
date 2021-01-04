@@ -11,7 +11,7 @@ const MAX = 360;
 interface RotationFieldProps {
   inputDefinition: InputDefinition<'rotation'>;
   properties: Model;
-  onChange(properties: Model): void;
+  onChange(properties: Partial<Model>): void;
 }
 function RotationField({
   inputDefinition,
@@ -37,10 +37,7 @@ function RotationField({
 
     let arr: [x: number, y: number, z: number] = [...value];
     arr[index] = num;
-    onChange({
-      ...properties,
-      [inputDefinition.key]: radiansAnglesToDegree(arr),
-    });
+    onChange({ [inputDefinition.key]: radiansAnglesToDegree(arr) });
   }
 
   return (

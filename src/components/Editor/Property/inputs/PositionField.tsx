@@ -31,7 +31,7 @@ function PositionField({
 
     let arr = [...value];
     arr[index] = num;
-    onChange({ ...properties, [inputDefinition.key]: arr });
+    onChange({ [inputDefinition.key]: arr });
   }
 
   return (

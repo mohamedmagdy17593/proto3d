@@ -23,7 +23,7 @@ function ColorField({
 
   function handleChange(value: any) {
     debouncedCb(() => {
-      onChange({ ...properties, [inputDefinition.key]: value.color });
+      onChange({ [inputDefinition.key]: value.color });
     });
   }
 

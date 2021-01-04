@@ -54,7 +54,7 @@ function ModelBrowser() {
       </Panel>
 
       <Panel header="Models" key="Models">
-        <Input placeholder={`Search`} />
+        <Input placeholder={`Search`} css={{ marginBottom: 12 }} />
 
         <ModelButtonsGrid>
           {PUBLIC_MODELS.map(modelData => {

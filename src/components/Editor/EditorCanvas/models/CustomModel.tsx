@@ -15,7 +15,7 @@ function CustomModel({ model }: CustomModelProps) {
     meshRef: primitive,
   });
 
-  let gltf = useLoader(GLTFLoader, 'models/wooden_table/scene.gltf');
+  let gltf = useLoader(GLTFLoader, model.modelUrl);
 
   // I don't know Why
   let object = gltf.scene.clone(true);

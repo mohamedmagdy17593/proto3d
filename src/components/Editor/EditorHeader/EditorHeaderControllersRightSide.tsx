@@ -1,6 +1,7 @@
 import { DownloadOutlined } from '@ant-design/icons';
 import { Button, Space } from 'antd';
 import { download3dCanvas } from '../EditorCanvas/EditorCanvas';
+import EditorHistoryButtons from './EditorHistoryButtons';
 import Logo from 'components/Logo';
 
 function EditorHeaderControllersRightSide() {
@@ -10,6 +11,8 @@ function EditorHeaderControllersRightSide() {
 
   return (
     <Space>
+      <EditorHistoryButtons />
+
       <Button
         onClick={handleDownload}
         type="primary"

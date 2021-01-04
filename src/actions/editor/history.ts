@@ -51,3 +51,23 @@ export function getCleanHistoryState(
   let { models, selectedModelId, transformMode } = _.cloneDeep(editorState);
   return { models, selectedModelId, transformMode };
 }
+
+export function undo() {
+  if (!historyManager.canUndo) {
+    return;
+  }
+
+  historyManager.redoStack.push(historyManager.lastState);
+  historyManager.lastState = historyManager.undoStack.pop()!;
+  Object.assign(editorState, historyManager.lastState);
+}
+
+export function redo() {
+  if (!historyManager.canRedo) {
+    return;
+  }
+
+  historyManager.undoStack.push(historyManager.lastState);
+  historyManager.lastState = historyManager.redoStack.pop()!;
+  Object.assign(editorState, historyManager.lastState);
+}

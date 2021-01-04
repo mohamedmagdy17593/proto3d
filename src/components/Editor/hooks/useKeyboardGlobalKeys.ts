@@ -39,6 +39,7 @@ function useKeyboardGlobalKeys() {
         }
         case 'Backspace': {
           deleteSelectedModel();
+          break;
         }
       }
     };

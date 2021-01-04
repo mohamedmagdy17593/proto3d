@@ -18,7 +18,11 @@ import {
 } from 'utils/editor';
 import { useKeyPress } from 'utils/useKeyPress';
 
-const debouncedCb = _.debounce(fn => fn(), 300);
+// FIXME: we should create new debounced function with every instance of EditorTransformControls component
+// For now we will leave this like that 🤓
+const debouncedMoveCb = _.debounce(fn => fn(), 300);
+const debouncedScaleCb = _.debounce(fn => fn(), 300);
+const debouncedRotateCb = _.debounce(fn => fn(), 300);
 
 interface EditorTransformControlsProps {
   children: React.ReactElement<Object3D>;
@@ -81,7 +85,7 @@ function EditorTransformControls({
     const callback = () => {
       switch (transformMode) {
         case 'translate': {
-          debouncedCb(() => {
+          debouncedMoveCb(() => {
             updateModelProperties(model.id, {
               position: getControls(controls, 'position'),
             });
@@ -89,7 +93,7 @@ function EditorTransformControls({
           break;
         }
         case 'scale': {
-          debouncedCb(() => {
+          debouncedScaleCb(() => {
             updateModelProperties(model.id, {
               scale: getControls(controls, 'scale'),
             });
@@ -97,7 +101,7 @@ function EditorTransformControls({
           break;
         }
         case 'rotate': {
-          debouncedCb(() => {
+          debouncedRotateCb(() => {
             updateModelProperties(model.id, {
               rotation: getControls(controls, 'rotation'),
             });
@@ -110,8 +114,9 @@ function EditorTransformControls({
     return () => controls.removeEventListener?.('objectChange', callback);
   }, [model.id, transformMode]);
 
+  let controls: TransformControls = transformRef.current;
+
   useEffect(() => {
-    let controls: TransformControls = transformRef.current;
     if (!controls?.object) return;
     let isModelPositionChanged = !isPointClose(
       model.position,
@@ -120,10 +125,9 @@ function EditorTransformControls({
     if (isModelPositionChanged) {
       setControls(controls, 'position', model.position);
     }
-  }, [model.position]);
+  }, [controls, model.position]);
 
   useEffect(() => {
-    let controls: TransformControls = transformRef.current;
     if (!controls?.object) return;
     let isModelScaleChanged = !isPointClose(
       model.scale,
@@ -132,10 +136,9 @@ function EditorTransformControls({
     if (isModelScaleChanged) {
       setControls(controls, 'scale', model.scale);
     }
-  }, [model.scale]);
+  }, [controls, model.scale]);
 
   useEffect(() => {
-    let controls: TransformControls = transformRef.current;
     if (!controls?.object) return;
     let isModelRotationChanged = !isPointClose(
       model.rotation,
@@ -144,7 +147,7 @@ function EditorTransformControls({
     if (isModelRotationChanged) {
       setControls(controls, 'rotation', model.rotation);
     }
-  }, [model.rotation]);
+  }, [controls, model.rotation]);
 
   return <TransformControls ref={transformRef}>{children}</TransformControls>;
 }

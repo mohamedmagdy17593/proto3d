@@ -28,10 +28,13 @@ export const addModel = actionContainer({
   commitToHistory: true,
 });
 
-export function updateModelProperties(id: string, properties: Partial<Model>) {
-  let selectedModel = editorState.models.find(model => model.id === id);
-  Object.assign(selectedModel, properties);
-}
+export const updateModelProperties = actionContainer({
+  preform(id: string, properties: Partial<Model>) {
+    let selectedModel = editorState.models.find(model => model.id === id);
+    Object.assign(selectedModel, properties);
+  },
+  commitToHistory: true,
+});
 
 export const deleteSelectedModel = actionContainer({
   preform() {

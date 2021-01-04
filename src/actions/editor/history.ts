@@ -5,7 +5,6 @@ import { editorState, EditorState } from './state';
 interface HistoryEditorState {
   models: EditorState['models'];
   selectedModelId: EditorState['selectedModelId'];
-  transformMode: EditorState['transformMode'];
 }
 
 // using class for testing valtio with class
@@ -48,8 +47,8 @@ export function pushToHistory(editorState: EditorState) {
 export function getCleanHistoryState(
   editorState: EditorState,
 ): HistoryEditorState {
-  let { models, selectedModelId, transformMode } = _.cloneDeep(editorState);
-  return { models, selectedModelId, transformMode };
+  let { models, selectedModelId } = _.cloneDeep(editorState);
+  return { models, selectedModelId };
 }
 
 export function undo() {

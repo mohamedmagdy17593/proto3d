@@ -5,10 +5,24 @@ import {
   increaseControlsSize,
 } from 'actions/editor/controls';
 import { deleteSelectedModel } from 'actions/editor/model';
+import { isCmdOrCtrlPressed } from 'utils/helpers';
+import { redo, undo } from 'actions/editor/history';
 
 function useKeyboardGlobalKeys() {
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      // undo and redo key bindings
+      if (isCmdOrCtrlPressed(e) && e.shiftKey && e.key === 'z') {
+        e.preventDefault();
+        (e.target as any)?.blur?.();
+        redo();
+      } else if (isCmdOrCtrlPressed(e) && e.key === 'z') {
+        e.preventDefault();
+        (e.target as any)?.blur?.();
+        undo();
+      }
+
+      // if target element is input then don't execute any shortcuts bellow
       let targetNodeName = (e.target as Element).nodeName;
       if (['INPUT'].includes(targetNodeName)) {
         return;

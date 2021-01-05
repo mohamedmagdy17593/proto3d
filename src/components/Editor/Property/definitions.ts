@@ -81,6 +81,5 @@ export const propertiesDefinitions: PropertiesDefinitions = {
       inputType: 'text-field',
     },
     ...transformPropertiesDefinitions,
-    ...stylePropertiesDefinitions,
   ],
 };

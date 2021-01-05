@@ -63,7 +63,6 @@ export function createNewModel({
         id,
         type,
         name: getModelName(label),
-        color: '#b55400',
         scale: [1, 1, 1],
         position: [0, 0, 0],
         rotation: [0, 0, 0],

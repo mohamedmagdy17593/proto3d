@@ -32,7 +32,9 @@ export function useModelProps(
 ) {
   let isSelected = useIsSelectedModel(model);
 
-  let outlineColor = isLight(model.color) ? 'black' : 'white';
+  let outlineColor =
+    'color' in model ? (isLight(model.color) ? 'black' : 'white') : undefined;
+
   // Select outline
   useEffect(() => {
     if (isSelected) {
@@ -75,7 +77,7 @@ export function useModelProps(
 
   let materialProps = {
     attach: 'material',
-    color: model.color,
+    color: 'color' in model ? model.color : undefined,
   };
 
   return {

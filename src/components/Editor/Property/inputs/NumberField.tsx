@@ -1,14 +1,17 @@
 /** @jsxImportSource @emotion/react */
 
 import { InputNumber, Form } from 'antd';
+import _ from 'lodash';
 import { InputDefinition } from 'types/editor';
 
 const MIN = 1;
 
+const debouncedCb = _.debounce(fn => fn(), 400);
+
 interface NumberFieldProps {
   inputDefinition: InputDefinition;
   properties: any;
-  onChange(properties: any): void;
+  onChange(properties: any, withHistory?: boolean): void;
 }
 function NumberField({
   inputDefinition,
@@ -24,7 +27,12 @@ function NumberField({
         css={{ width: 80 }}
         placeholder={placeholder}
         value={value}
-        onChange={number => onChange({ [inputDefinition.key]: number })}
+        onChange={number => {
+          onChange({ [inputDefinition.key]: number });
+          debouncedCb(() => {
+            onChange({ [inputDefinition.key]: number }, true);
+          });
+        }}
         min={MIN}
       />
     </Form.Item>

@@ -6,6 +6,7 @@ import { Button, Divider } from 'antd';
 import { DeleteOutlined } from '@ant-design/icons';
 import {
   deleteSelectedModel,
+  updateModelPropertiesWithHistory,
   updateModelProperties,
   useSelectedModel,
 } from '../../../actions/editor/model';
@@ -90,9 +91,16 @@ function PropertyPanel() {
           <PropertyForm
             inputDefinitions={propertiesDefinitions[selectedModal.type]}
             properties={selectedModal}
-            onChange={newProperties => {
+            onChange={(newProperties, withHistory: boolean = false) => {
               if (selectedModal) {
-                updateModelProperties(selectedModal.id, newProperties);
+                if (withHistory) {
+                  updateModelPropertiesWithHistory(
+                    selectedModal.id,
+                    newProperties,
+                  );
+                } else {
+                  updateModelProperties(selectedModal.id, newProperties);
+                }
               }
             }}
           />

@@ -3,15 +3,18 @@
 import { /* Button, */ Form, InputNumber, Space } from 'antd';
 // import { useState } from 'react';
 // import { DisconnectOutlined, LinkOutlined } from '@ant-design/icons';
+import _ from 'lodash';
 import { InputDefinition } from '../../../../types/editor';
 // import { Tooltip } from 'components/common/Popover';
 
 const MIN = 0;
 
+const debouncedCb = _.debounce(fn => fn(), 400);
+
 interface ScaleFieldProps {
   inputDefinition: InputDefinition;
   properties: any;
-  onChange(properties: any): void;
+  onChange(properties: any, withHistory?: boolean): void;
 }
 function ScaleField({
   inputDefinition,
@@ -41,6 +44,9 @@ function ScaleField({
     arr[index] = num;
     // }
     onChange({ [inputDefinition.key]: arr });
+    debouncedCb(() => {
+      onChange({ [inputDefinition.key]: arr }, true);
+    });
   }
 
   return (

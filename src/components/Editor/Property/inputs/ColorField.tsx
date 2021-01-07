@@ -7,12 +7,12 @@ import ColorPicker from 'rc-color-picker';
 import _ from 'lodash';
 import { InputDefinition } from '../../../../types/editor';
 
-const debouncedCb = _.debounce(fn => fn(), 300);
+const debouncedCb = _.debounce(fn => fn(), 400);
 
 interface ColorFieldProps {
   inputDefinition: InputDefinition;
   properties: any;
-  onChange(properties: any): void;
+  onChange(properties: any, withHistory?: boolean): void;
 }
 function ColorField({
   inputDefinition,
@@ -23,7 +23,7 @@ function ColorField({
 
   function handleChange(value: any) {
     debouncedCb(() => {
-      onChange({ [inputDefinition.key]: value.color });
+      onChange({ [inputDefinition.key]: value.color }, true);
     });
   }
 

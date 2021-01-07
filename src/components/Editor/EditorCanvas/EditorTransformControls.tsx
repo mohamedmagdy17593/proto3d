@@ -5,7 +5,7 @@ import { Object3D } from 'three';
 import * as THREE from 'three';
 import { useEditorCanvas } from './EditorCanvas';
 import {
-  updateModelProperties,
+  updateModelPropertiesWithHistory,
   useIsSelectedModel,
 } from 'actions/editor/model';
 import { useEditorState } from 'actions/editor/state';
@@ -20,9 +20,9 @@ import { useKeyPress } from 'utils/useKeyPress';
 
 // FIXME: we should create new debounced function with every instance of EditorTransformControls component
 // For now we will leave this like that 🤓
-const debouncedMoveCb = _.debounce(fn => fn(), 300);
-const debouncedScaleCb = _.debounce(fn => fn(), 300);
-const debouncedRotateCb = _.debounce(fn => fn(), 300);
+const debouncedMoveCb = _.debounce(fn => fn(), 400);
+const debouncedScaleCb = _.debounce(fn => fn(), 400);
+const debouncedRotateCb = _.debounce(fn => fn(), 400);
 
 interface EditorTransformControlsProps {
   children: React.ReactElement<Object3D>;
@@ -86,7 +86,7 @@ function EditorTransformControls({
       switch (transformMode) {
         case 'translate': {
           debouncedMoveCb(() => {
-            updateModelProperties(model.id, {
+            updateModelPropertiesWithHistory(model.id, {
               position: getControls(controls, 'position'),
             });
           });
@@ -94,7 +94,7 @@ function EditorTransformControls({
         }
         case 'scale': {
           debouncedScaleCb(() => {
-            updateModelProperties(model.id, {
+            updateModelPropertiesWithHistory(model.id, {
               scale: getControls(controls, 'scale'),
             });
           });
@@ -102,7 +102,7 @@ function EditorTransformControls({
         }
         case 'rotate': {
           debouncedRotateCb(() => {
-            updateModelProperties(model.id, {
+            updateModelPropertiesWithHistory(model.id, {
               rotation: getControls(controls, 'rotation'),
             });
           });

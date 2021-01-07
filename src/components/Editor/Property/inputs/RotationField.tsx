@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { Form, InputNumber, Space } from 'antd';
+import _ from 'lodash';
 import { InputDefinition, Model } from '../../../../types/editor';
 import { useKeyPress } from 'utils/useKeyPress';
 import { degreeAnglesToRadians, radiansAnglesToDegree } from 'utils/editor';
@@ -8,10 +9,12 @@ import { degreeAnglesToRadians, radiansAnglesToDegree } from 'utils/editor';
 const MIN = -360;
 const MAX = 360;
 
+const debouncedCb = _.debounce(fn => fn(), 400);
+
 interface RotationFieldProps {
   inputDefinition: InputDefinition<'rotation'>;
   properties: Model;
-  onChange(properties: Partial<Model>): void;
+  onChange(properties: Partial<Model>, withHistory?: boolean): void;
 }
 function RotationField({
   inputDefinition,
@@ -37,7 +40,11 @@ function RotationField({
 
     let arr: [x: number, y: number, z: number] = [...value];
     arr[index] = num;
+
     onChange({ [inputDefinition.key]: radiansAnglesToDegree(arr) });
+    debouncedCb(() => {
+      onChange({ [inputDefinition.key]: radiansAnglesToDegree(arr) }, true);
+    });
   }
 
   return (

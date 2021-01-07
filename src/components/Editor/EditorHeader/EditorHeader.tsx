@@ -2,17 +2,8 @@
 
 import EditorHeaderControllers from './EditorHeaderControllers';
 import EditorHeaderControllersRightSide from './EditorHeaderControllersRightSide';
-import { useHistoryManager } from 'actions/editor/history';
 
 function EditorHeader() {
-  let { undoStack, redoStack, lastState } = useHistoryManager();
-
-  console.log({
-    undoStack,
-    redoStack,
-    lastState,
-  });
-
   return (
     <div
       css={{

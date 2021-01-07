@@ -3,12 +3,15 @@
 import 'rc-color-picker/assets/index.css';
 
 import { Form, InputNumber, Space } from 'antd';
+import _ from 'lodash';
 import { InputDefinition } from '../../../../types/editor';
+
+const debouncedCb = _.debounce(fn => fn(), 400);
 
 interface PositionFieldProps {
   inputDefinition: InputDefinition;
   properties: any;
-  onChange(properties: any): void;
+  onChange(properties: any, withHistory?: boolean): void;
 }
 function PositionField({
   inputDefinition,
@@ -25,13 +28,18 @@ function PositionField({
     index: number;
     number: string | number | undefined;
   }) {
+    console.log('run');
     // @ts-ignore
     let num = parseInt(number);
     if (isNaN(num)) return;
 
     let arr = [...value];
     arr[index] = num;
+
     onChange({ [inputDefinition.key]: arr });
+    debouncedCb(() => {
+      onChange({ [inputDefinition.key]: arr }, true);
+    });
   }
 
   return (

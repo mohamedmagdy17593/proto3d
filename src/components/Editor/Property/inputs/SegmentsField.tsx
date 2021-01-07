@@ -1,14 +1,17 @@
 /** @jsxImportSource @emotion/react */
 
 import { Form, InputNumber, Space } from 'antd';
+import _ from 'lodash';
 import { InputDefinition } from '../../../../types/editor';
 
 const MIN = 0;
 
+const debouncedCb = _.debounce(fn => fn(), 400);
+
 interface SegmentsProps {
   inputDefinition: InputDefinition;
   properties: any;
-  onChange(properties: any): void;
+  onChange(properties: any, withHistory?: boolean): void;
 }
 function Segments({ inputDefinition, properties, onChange }: SegmentsProps) {
   let value = properties[inputDefinition.key];
@@ -28,6 +31,9 @@ function Segments({ inputDefinition, properties, onChange }: SegmentsProps) {
     let arr = [...value];
     arr[index] = num;
     onChange({ [inputDefinition.key]: arr });
+    debouncedCb(() => {
+      onChange({ [inputDefinition.key]: arr }, true);
+    });
   }
 
   return (

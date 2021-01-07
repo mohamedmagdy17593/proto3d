@@ -1,4 +1,4 @@
-import { proxy, useProxy } from 'valtio';
+import { proxy, subscribe, useProxy } from 'valtio';
 import { Model, TransformMode } from '../../types/editor';
 
 export interface CanvasSettings {
@@ -30,8 +30,18 @@ export function initEditorState(): EditorState {
 /**
  * create react proxy
  */
-export const editorState = proxy(initEditorState());
+let localStorageEditorState = window.localStorage.getItem('editor-state');
+export const editorState: EditorState = proxy(
+  localStorageEditorState
+    ? JSON.parse(localStorageEditorState)
+    : initEditorState(),
+);
 
 export function useEditorState(): EditorState {
   return useProxy(editorState);
 }
+
+subscribe(editorState, () => {
+  let editorStateString = JSON.stringify(editorState);
+  window.localStorage.setItem('editor-state', editorStateString);
+});

@@ -29,36 +29,38 @@ function useKeyboardGlobalKeys() {
         return;
       }
 
-      switch (e.key) {
-        case 'm':
-        case 'M': {
-          editorState.transformMode = 'translate';
-          break;
-        }
-        case 's':
-        case 'S': {
-          editorState.transformMode = 'scale';
-          break;
-        }
-        case 'r':
-        case 'R': {
-          editorState.transformMode = 'rotate';
-          break;
-        }
-        case '+':
-        case '=': {
-          increaseControlsSize();
-          break;
-        }
-        case '-':
-        case '_': {
-          decreaseControlsSize();
-          break;
-        }
-        case 'Backspace':
-        case 'Delete': {
-          deleteSelectedModel();
-          break;
+      if (!isCmdOrCtrlPressed(e)) {
+        switch (e.key) {
+          case 'm':
+          case 'M': {
+            editorState.transformMode = 'translate';
+            break;
+          }
+          case 's':
+          case 'S': {
+            editorState.transformMode = 'scale';
+            break;
+          }
+          case 'r':
+          case 'R': {
+            editorState.transformMode = 'rotate';
+            break;
+          }
+          case '+':
+          case '=': {
+            increaseControlsSize();
+            break;
+          }
+          case '-':
+          case '_': {
+            decreaseControlsSize();
+            break;
+          }
+          case 'Backspace':
+          case 'Delete': {
+            deleteSelectedModel();
+            break;
+          }
         }
       }
     };

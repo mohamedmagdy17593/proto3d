@@ -1,4 +1,4 @@
-# Proto3D
+# Proto3D (WIP)
 
 Simple 3d editor for prototyping
 

@@ -4,10 +4,10 @@ import { PopoverProps as AntdPopoverProps } from 'antd/lib/popover';
 import { TooltipProps as AntdToolTipProps } from 'antd/lib/tooltip';
 
 interface PopoverProps extends AntdPopoverProps {}
-export function Popover(props: PopoverProps) {
+export function Popover({ overlayClassName, ...props }: PopoverProps) {
   return (
     <AntdPopover
-      overlayClassName="popover-overlay"
+      overlayClassName={`popover-overlay ${overlayClassName}`}
       placement="bottomLeft"
       trigger="click"
       {...props}

@@ -1,20 +1,20 @@
 /** @jsxImportSource @emotion/react */
 
-import { Collapse, Input } from 'antd';
+import { Collapse } from 'antd';
 import styled from '@emotion/styled';
 import { ModelButton, MODEL_BUTTON_SIZE } from '../../common/Buttons';
 import { addModel } from '../../../actions/editor/model';
+import ModelsSearch from './ModelsSearch';
 import boxImage from 'images/models/box.png';
 import sphereImage from 'images/models/sphere.png';
 import planeImage from 'images/models/plane.png';
-import PUBLIC_MODELS from 'public-models';
 
 const { Panel } = Collapse;
 
-const ModelButtonsGrid = styled('div')({
+export const ModelButtonsGrid = styled('div')({
   display: 'grid',
   gridTemplateColumns: `repeat(auto-fill, ${MODEL_BUTTON_SIZE}px)`,
-  gap: 4,
+  gap: 8,
 });
 
 function ModelBrowser() {
@@ -54,35 +54,7 @@ function ModelBrowser() {
       </Panel>
 
       <Panel header="Models" key="Models">
-        <Input
-          placeholder={`Search`}
-          onKeyDown={e => e.stopPropagation()}
-          css={{ marginBottom: 12 }}
-        />
-
-        <ModelButtonsGrid>
-          {PUBLIC_MODELS.map(modelData => {
-            return (
-              <ModelButton
-                key={modelData.name}
-                name={modelData.name}
-                src={modelData.imageUrl}
-                onClick={() => {
-                  addModel('custom', {
-                    modelUrl: modelData.modelUrl,
-                    name: modelData.name,
-                  });
-                }}
-              />
-            );
-          })}
-        </ModelButtonsGrid>
-
-        {/* <div css={{ height: 200, display: 'grid', placeItems: 'center' }}>
-          <p css={{ opacity: 0.5, textAlign: 'center' }}>
-            Not Found come back latter
-          </p>
-        </div> */}
+        <ModelsSearch />
       </Panel>
     </Collapse>
   );

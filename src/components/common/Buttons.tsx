@@ -21,7 +21,7 @@ export function IconCircleButton({
   );
 }
 
-export const MODEL_BUTTON_SIZE = 56;
+export const MODEL_BUTTON_SIZE = 52;
 
 interface ModelButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -59,6 +59,7 @@ export function ModelButton({ src, name, ...restProps }: ModelButtonProps) {
         {...restProps}
       >
         <img
+          css={{ objectFit: 'cover' }}
           width={MODEL_BUTTON_SIZE}
           height={MODEL_BUTTON_SIZE}
           alt={name}

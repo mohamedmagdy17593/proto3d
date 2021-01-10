@@ -1,5 +1,6 @@
 import { titleCase } from 'tiny-case';
 import { Model, ModelTypes } from 'types/editor';
+import { ApiModelStatus } from 'types/model';
 
 let nameCounts: { [key: string]: number } = {};
 export function getModelName(label: string) {
@@ -73,4 +74,24 @@ export function createNewModel({
       throw Error(`unknown model Type ${type}`);
     }
   }
+}
+
+export function getModelBadgeDotColor(status: ApiModelStatus) {
+  return status === 'uploaded'
+    ? 'green'
+    : status === 'error-while-uploading'
+    ? 'red'
+    : status === 'uploading'
+    ? 'orange'
+    : 'blue';
+}
+
+export function getModelBadgeDotTitle(status: ApiModelStatus) {
+  return status === 'uploaded'
+    ? 'Ready to use'
+    : status === 'error-while-uploading'
+    ? 'Error while uploading (try later)'
+    : status === 'uploading'
+    ? 'Wait this is currently uploading'
+    : 'Click to trigger upload';
 }

@@ -1,5 +1,9 @@
 import { editorState, initEditorState } from './state';
+import { actionContainer } from './utils';
 
-export function resetEditorState() {
-  Object.assign(editorState, initEditorState());
-}
+export const resetEditorState = actionContainer({
+  preform() {
+    Object.assign(editorState, initEditorState());
+  },
+  commitToHistory: true,
+});

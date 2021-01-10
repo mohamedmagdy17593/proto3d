@@ -1,5 +1,4 @@
-import { proxy, useProxy } from 'valtio';
-import _ from 'lodash';
+import { proxy, snapshot, useProxy } from 'valtio';
 import { editorState, EditorState } from './state';
 
 interface HistoryEditorState {
@@ -47,7 +46,7 @@ export function pushToHistory(editorState: EditorState) {
 export function getCleanHistoryState(
   editorState: EditorState,
 ): HistoryEditorState {
-  let { models, selectedModelId } = _.cloneDeep(editorState);
+  let { models, selectedModelId } = snapshot(editorState);
   return { models, selectedModelId };
 }
 

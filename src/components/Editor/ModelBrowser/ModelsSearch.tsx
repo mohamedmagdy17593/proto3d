@@ -98,11 +98,13 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
 
       message.success({
         content: `${model.name} is uploaded you can click on it to use it`,
+        duration: 300,
         key,
       });
     } catch {
       message.error({
         content: `${model.name} Failed while Uploading we will try to fix this soon`,
+        duration: 300,
         key,
       });
     }
@@ -110,12 +112,11 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
 
   return (
     <Badge
-      key={model.id}
       dot
       title={getModelBadgeDotTitle(model.status)}
       color={getModelBadgeDotColor(model.status)}
     >
-      <Popover
+      {/* <Popover
         mouseEnterDelay={0.5}
         overlayClassName="ModelsSearch__popover-overlay"
         content={
@@ -123,38 +124,38 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
         }
         trigger="hover"
         placement="right"
-      >
-        <ModelButton
-          name={model.name}
-          src={model.imgSmall}
-          onClick={() => {
-            switch (model.status) {
-              case 'uploaded': {
-                addModel('custom', {
-                  modelUrl: model.gltfUrl!,
-                  name: model.name,
-                });
-                break;
-              }
-              case 'not-uploaded': {
-                triggerUpload();
-                break;
-              }
-              case 'uploading': {
-                message.info(
-                  `This model is Currently uploading try later maybe it's done`,
-                );
-                break;
-              }
-              case 'error-while-uploading': {
-                message.info(
-                  `Failed to upload, We investigate why this is happened`,
-                );
-              }
+      > */}
+      <ModelButton
+        name={model.name}
+        src={model.imgSmall}
+        onClick={() => {
+          switch (model.status) {
+            case 'uploaded': {
+              addModel('custom', {
+                modelUrl: model.gltfUrl!,
+                name: model.name,
+              });
+              break;
             }
-          }}
-        />
-      </Popover>
+            case 'not-uploaded': {
+              triggerUpload();
+              break;
+            }
+            case 'uploading': {
+              message.info(
+                `This model is Currently uploading try later maybe it's done`,
+              );
+              break;
+            }
+            case 'error-while-uploading': {
+              message.info(
+                `Failed to upload, We investigate why this is happened`,
+              );
+            }
+          }
+        }}
+      />
+      {/* </Popover> */}
     </Badge>
   );
 }

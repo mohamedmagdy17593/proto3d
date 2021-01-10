@@ -26,7 +26,7 @@ function PositionField({
     number,
   }: {
     index: number;
-    number: string | number | undefined;
+    number: string | number | null | undefined;
   }) {
     console.log('run');
     // @ts-ignore

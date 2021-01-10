@@ -27,7 +27,7 @@ function ModelBrowser() {
           paddingLeft: 40,
         },
         '> .ant-collapse-item > .ant-collapse-header .ant-collapse-arrow': {
-          top: 14,
+          top: 2,
         },
       }}
       defaultActiveKey={['Primitives', 'Models']}

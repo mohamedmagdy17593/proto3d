@@ -22,7 +22,7 @@ function Segments({ inputDefinition, properties, onChange }: SegmentsProps) {
     number,
   }: {
     index: number;
-    number: string | number | undefined;
+    number: string | number | null | undefined;
   }) {
     // @ts-ignore
     let num = parseInt(number);

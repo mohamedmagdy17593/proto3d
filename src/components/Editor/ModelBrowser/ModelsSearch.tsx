@@ -2,35 +2,40 @@
 
 import './ModelsSearch.less';
 
-import { Badge, Button, Input, message, Skeleton, Typography } from 'antd';
+import { Badge, Input, message, Skeleton } from 'antd';
 import { proxy, useProxy } from 'valtio';
-import { Suspense, useCallback, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import _ from 'lodash';
-import Modal from 'antd/lib/modal/Modal';
 import { ModelButton } from '../../common/Buttons';
 import { ModelButtonsGrid } from './ModelBrowser';
 import { addModel } from 'actions/editor/model';
 import { getModel, searchModels, upload } from 'service/model';
 import { Popover } from 'components/common/Popover';
-import useUpdateEffect from 'utils/useUpdateEffect';
 import { getModelBadgeDotColor, getModelBadgeDotTitle } from 'utils/model';
 import { ApiModel } from 'types/model';
 
-let modelsSearchState = proxy({ models: searchModels(), search: '' });
+interface ModelsSearchState {
+  models?: ApiModel[];
+  loading: boolean;
+  search: string;
+}
+const modelsSearchState: ModelsSearchState = proxy({
+  loading: true,
+  search: '',
+});
 
 const debouncedCb = _.debounce(fn => fn(), 500);
 
-const { Paragraph, Text } = Typography;
-
 function ModelsSearch() {
-  let { search } = useProxy(modelsSearchState);
+  let { search, loading } = useProxy(modelsSearchState);
 
-  let runSearch = useCallback(
-    () => (modelsSearchState.models = searchModels(search)),
-    [search],
-  );
+  let runSearch = useCallback(() => {
+    searchModels(search).then(models => {
+      Object.assign(modelsSearchState, { models, loading: false });
+    });
+  }, [search]);
 
-  useUpdateEffect(() => {
+  useEffect(() => {
     debouncedCb(() => {
       runSearch();
     });
@@ -45,119 +50,42 @@ function ModelsSearch() {
         onKeyDown={e => e.stopPropagation()}
         onChange={e => (modelsSearchState.search = e.target.value)}
       />
-      <Suspense fallback={<Skeleton round />}>
-        <ModelsSearchResult runSearch={runSearch} />
-      </Suspense>
+      {loading ? <Skeleton /> : <ModelsSearchResult />}
     </>
   );
 }
 
-interface ModelsSearchResultProps {
-  runSearch: () => Promise<ApiModel[]>;
-}
-function ModelsSearchResult({ runSearch }: ModelsSearchResultProps) {
+function ModelsSearchResult() {
   let { models } = useProxy(modelsSearchState);
-  let [triggerModelId, setTriggerModelId] = useState<null | string>(null);
-
-  let triggerModel = models.find(model => model.id === triggerModelId);
 
   return (
-    <>
-      <ModelButtonsGrid>
-        {models.map(modelData => {
-          return (
-            <Badge
-              key={modelData.id}
-              dot
-              title={getModelBadgeDotTitle(modelData.status)}
-              color={getModelBadgeDotColor(modelData.status)}
-            >
-              <Popover
-                mouseEnterDelay={0.5}
-                overlayClassName="ModelsSearch__popover-overlay"
-                content={
-                  <img
-                    css={{ maxWidth: 900 }}
-                    src={modelData.imgLarge}
-                    alt={modelData.name}
-                  ></img>
-                }
-                trigger="hover"
-                placement="right"
-              >
-                <ModelButton
-                  name={modelData.name}
-                  src={modelData.imgSmall}
-                  onClick={() => {
-                    switch (modelData.status) {
-                      case 'uploaded': {
-                        addModel('custom', {
-                          modelUrl: modelData.gltfUrl!,
-                          name: modelData.name,
-                        });
-                        break;
-                      }
-                      case 'not-uploaded': {
-                        setTriggerModelId(modelData.id);
-                        break;
-                      }
-                      case 'uploading': {
-                        message.info(
-                          `This model is Currently uploading try later maybe it's done`,
-                        );
-                        break;
-                      }
-                      case 'error-while-uploading': {
-                        message.info(
-                          `Failed to upload, We investigate why this is happened`,
-                        );
-                      }
-                    }
-                  }}
-                />
-              </Popover>
-            </Badge>
-          );
-        })}
-      </ModelButtonsGrid>
-
-      <Modal
-        centered
-        visible={!!triggerModel}
-        footer={false}
-        onCancel={() => setTriggerModelId(null)}
-        title={<>Trigger uploading</>}
-        destroyOnClose
-      >
-        {triggerModel && (
-          <TriggerUploading
-            runSearch={runSearch}
-            close={() => setTriggerModelId(null)}
-            model={triggerModel}
-          />
-        )}
-      </Modal>
-    </>
+    <ModelButtonsGrid>
+      {(models as ApiModel[]).map(modelData => {
+        return <CustomModelButton key={modelData.id} model={modelData} />;
+      })}
+    </ModelButtonsGrid>
   );
 }
 
-interface TriggerUploadingProps {
+interface CustomModelButtonProps {
   model: ApiModel;
-  runSearch: () => Promise<ApiModel[]>;
-  close(): void;
 }
-function TriggerUploading({ model, runSearch, close }: TriggerUploadingProps) {
-  let [refreshModel, setRefreshModel] = useState<null | ApiModel>(null);
-  let [loading, setLoading] = useState(false);
-
+function CustomModelButton({ model }: CustomModelButtonProps) {
   async function triggerUpload() {
-    setLoading(true);
+    let key = model.id;
     try {
+      message.loading({ content: 'Upload requested', key });
       await upload(model);
 
       while (true) {
         let refreshModel = await getModel(model.id);
-        setRefreshModel(refreshModel);
+        modelsSearchState.models = modelsSearchState.models?.map(model => {
+          if (model.id === refreshModel.id) {
+            return refreshModel;
+          }
+          return model;
+        });
+        message.loading({ content: refreshModel.statusMessage, key });
         if (
           refreshModel.status === 'uploading' ||
           refreshModel.status === 'not-uploaded'
@@ -168,56 +96,66 @@ function TriggerUploading({ model, runSearch, close }: TriggerUploadingProps) {
         }
       }
 
-      message.info(`${model.name} is uploaded you can click on it to use it`);
+      message.success({
+        content: `${model.name} is uploaded you can click on it to use it`,
+        key,
+      });
     } catch {
-      message.info(
-        `${model.name} Failed while Uploading we will try to fix this soon`,
-      );
-    } finally {
-      setLoading(false);
-      close();
-      runSearch();
+      message.error({
+        content: `${model.name} Failed while Uploading we will try to fix this soon`,
+        key,
+      });
     }
   }
 
-  let displayModel = refreshModel ?? model;
-  let disableUpload =
-    displayModel.status === 'uploaded' ||
-    displayModel.status === 'error-while-uploading';
-  let isLoading = loading || displayModel.status === 'uploading';
-
   return (
-    <div>
-      <Paragraph>
-        Uploading{' '}
-        <Text underline strong>
-          ({model.name})
-        </Text>{' '}
-        model?
-      </Paragraph>
-
-      <Paragraph>
-        <img
-          css={{ width: '100%' }}
-          src={model.imgLarge}
-          alt={model.name}
-        ></img>
-      </Paragraph>
-
-      <Paragraph type="success" code>
-        status: {displayModel.statusMessage}
-      </Paragraph>
-
-      <Button
-        loading={isLoading}
-        disabled={disableUpload}
-        type="primary"
-        block
-        onClick={triggerUpload}
+    <Badge
+      key={model.id}
+      dot
+      title={getModelBadgeDotTitle(model.status)}
+      color={getModelBadgeDotColor(model.status)}
+    >
+      <Popover
+        mouseEnterDelay={0.5}
+        overlayClassName="ModelsSearch__popover-overlay"
+        content={
+          <img css={{ maxWidth: 900 }} src={model.imgLarge} alt={model.name} />
+        }
+        trigger="hover"
+        placement="right"
       >
-        Upload
-      </Button>
-    </div>
+        <ModelButton
+          name={model.name}
+          src={model.imgSmall}
+          onClick={() => {
+            switch (model.status) {
+              case 'uploaded': {
+                addModel('custom', {
+                  modelUrl: model.gltfUrl!,
+                  name: model.name,
+                });
+                break;
+              }
+              case 'not-uploaded': {
+                triggerUpload();
+                break;
+              }
+              case 'uploading': {
+                message.info(
+                  `This model is Currently uploading try later maybe it's done`,
+                );
+                break;
+              }
+              case 'error-while-uploading': {
+                message.info(
+                  `Failed to upload, We investigate why this is happened`,
+                );
+              }
+            }
+          }}
+        />
+      </Popover>
+    </Badge>
   );
 }
 

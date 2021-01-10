@@ -1,20 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
 import { Canvas } from 'react-three-fiber';
-import { OrbitControls, Stars } from 'drei';
-import {
-  createContext,
-  Suspense,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { Html, OrbitControls, Stars, useProgress } from 'drei';
+import { createContext, Suspense, useContext, useRef } from 'react';
 import * as THREE from 'three';
-
+import { Progress } from 'antd';
 import { useEditorState } from '../../../actions/editor/state';
 import RenderModels from './RenderModels';
-import CanvasLoading from './CanvasLoading';
+
 import { useCanvasPreventClickWhileDragging } from 'utils/editor';
 
 interface EditorCanvasContextProps {
@@ -41,19 +34,6 @@ function EditorCanvas() {
     orbitRef,
   };
 
-  let [showLoading, setShowLoading] = useState(false);
-
-  // run SuspenseFallback Component as an effect to change canvas loading state
-  let { current: SuspenseFallback } = useRef(function SuspenseFallback() {
-    useEffect(() => {
-      setShowLoading(true);
-      return () => {
-        setShowLoading(false);
-      };
-    }, []);
-    return null;
-  });
-
   return (
     <div
       ref={canvasContainerRef}
@@ -64,8 +44,6 @@ function EditorCanvas() {
         position: 'relative',
       }}
     >
-      {showLoading && <CanvasLoading />}
-
       <Canvas
         onCreated={({ gl, scene, camera }) => {
           // reassign
@@ -104,12 +82,23 @@ function EditorCanvas() {
 
           <pointLight castShadow intensity={0.8} position={[0, 0, 5]} />
 
-          <Suspense fallback={<SuspenseFallback />}>
+          <Suspense fallback={<Loader />}>
             <RenderModels />
           </Suspense>
         </EditorCanvasContext.Provider>
       </Canvas>
     </div>
+  );
+}
+
+function Loader() {
+  const { progress } = useProgress();
+  return (
+    <Html center>
+      <div css={{ width: '300px' }}>
+        <Progress percent={progress}></Progress>
+      </div>
+    </Html>
   );
 }
 

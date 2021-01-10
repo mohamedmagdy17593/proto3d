@@ -2,7 +2,7 @@
 
 import './ModelsSearch.less';
 
-import { Badge, Input, message, Skeleton } from 'antd';
+import { Badge, Button, Input, message, Skeleton } from 'antd';
 import { proxy, useProxy } from 'valtio';
 import { useCallback, useEffect } from 'react';
 import _ from 'lodash';
@@ -10,30 +10,56 @@ import { ModelButton } from '../../common/Buttons';
 import { ModelButtonsGrid } from './ModelBrowser';
 import { addModel } from 'actions/editor/model';
 import { getModel, searchModels, upload } from 'service/model';
-import { Popover } from 'components/common/Popover';
 import { getModelBadgeDotColor, getModelBadgeDotTitle } from 'utils/model';
 import { ApiModel } from 'types/model';
 
 interface ModelsSearchState {
-  models?: ApiModel[];
-  loading: boolean;
+  models: ApiModel[];
   search: string;
+  loading: boolean;
+  loadingMore: boolean;
+  cursor: number;
 }
 const modelsSearchState: ModelsSearchState = proxy({
+  models: [],
   loading: true,
+  loadingMore: false,
   search: '',
+  cursor: 0,
 });
 
 const debouncedCb = _.debounce(fn => fn(), 500);
 
 function ModelsSearch() {
-  let { search, loading } = useProxy(modelsSearchState);
+  let { search, loading, models, cursor, loadingMore } = useProxy(
+    modelsSearchState,
+  );
 
-  let runSearch = useCallback(() => {
-    searchModels(search).then(models => {
-      Object.assign(modelsSearchState, { models, loading: false });
+  let runSearch = useCallback(async () => {
+    modelsSearchState.loading = true;
+    let models = await searchModels({ search, cursor: 0 });
+    Object.assign(modelsSearchState, {
+      models,
+      loading: false,
+      loadingMore: false,
+      cursor: 0,
     });
   }, [search]);
+
+  let loadMore = useCallback(async () => {
+    modelsSearchState.loadingMore = true;
+    let newCursor = cursor + 24 * 2;
+    let newModels = [
+      ...models,
+      ...(await searchModels({ search, cursor: newCursor })),
+    ];
+    Object.assign(modelsSearchState, {
+      models: newModels,
+      loading: false,
+      loadingMore: false,
+      cursor: newCursor,
+    });
+  }, [cursor, models, search]);
 
   useEffect(() => {
     debouncedCb(() => {
@@ -50,7 +76,24 @@ function ModelsSearch() {
         onKeyDown={e => e.stopPropagation()}
         onChange={e => (modelsSearchState.search = e.target.value)}
       />
-      {loading ? <Skeleton /> : <ModelsSearchResult />}
+      {loading ? (
+        <Skeleton />
+      ) : (
+        <>
+          <ModelsSearchResult />
+          <Button
+            css={{ marginTop: 12 }}
+            type="dashed"
+            block
+            loading={loadingMore}
+            onClick={() => {
+              loadMore();
+            }}
+          >
+            Load more
+          </Button>
+        </>
+      )}
     </>
   );
 }
@@ -74,7 +117,7 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
   async function triggerUpload() {
     let key = model.id;
     try {
-      message.loading({ content: 'Upload requested', key });
+      message.loading({ content: 'Upload requested', key, duration: 0 });
       await upload(model);
 
       while (true) {
@@ -85,7 +128,11 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
           }
           return model;
         });
-        message.loading({ content: refreshModel.statusMessage, key });
+        message.loading({
+          content: refreshModel.statusMessage,
+          key,
+          duration: 0,
+        });
         if (
           refreshModel.status === 'uploading' ||
           refreshModel.status === 'not-uploaded'
@@ -98,13 +145,13 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
 
       message.success({
         content: `${model.name} is uploaded you can click on it to use it`,
-        duration: 300,
+        duration: 2,
         key,
       });
     } catch {
       message.error({
         content: `${model.name} Failed while Uploading we will try to fix this soon`,
-        duration: 300,
+        duration: 2,
         key,
       });
     }

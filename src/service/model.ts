@@ -3,9 +3,13 @@ import { ApiModel } from 'types/model';
 
 const API_URL = process.env.REACT_APP_API_URL!;
 
-export async function searchModels(search?: string) {
+interface SearchModelsArg {
+  search?: string;
+  cursor?: number;
+}
+export async function searchModels({ search, cursor }: SearchModelsArg) {
   let { data } = await axios.get<{ result: ApiModel[] }>(`${API_URL}/models`, {
-    params: { search },
+    params: { search, cursor },
   });
 
   return data.result;

@@ -4,7 +4,7 @@ import './ModelsSearch.less';
 
 import { Badge, Button, Input, message, Skeleton, Typography } from 'antd';
 import { proxy, useProxy } from 'valtio';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import _ from 'lodash';
 import { ModelButton } from '../../common/Buttons';
 import { ModelButtonsGrid } from './ModelBrowser';
@@ -41,34 +41,44 @@ function ModelsSearch() {
     modelsSearchState,
   );
 
+  let runSearchCountRef = useRef(0);
   let runSearch = useCallback(async () => {
     try {
+      modelsSearchState.error = null;
       modelsSearchState.loading = true;
+      let thisRunSearchCount = ++runSearchCountRef.current;
       let models = await searchModels({ search, cursor: 0 });
-      Object.assign(modelsSearchState, {
-        models,
-        loading: false,
-        loadingMore: false,
-        cursor: 0,
-      });
+      if (thisRunSearchCount === runSearchCountRef.current) {
+        Object.assign(modelsSearchState, {
+          models,
+          loading: false,
+          loadingMore: false,
+          cursor: 0,
+        });
+      }
     } catch (e: any) {
       modelsSearchState.error = e;
     }
   }, [search]);
 
   let loadMore = useCallback(async () => {
-    modelsSearchState.loadingMore = true;
-    let newCursor = cursor + 24 * 2;
-    let newModels = [
-      ...models,
-      ...(await searchModels({ search, cursor: newCursor })),
-    ];
-    Object.assign(modelsSearchState, {
-      models: newModels,
-      loading: false,
-      loadingMore: false,
-      cursor: newCursor,
-    });
+    try {
+      modelsSearchState.error = null;
+      modelsSearchState.loadingMore = true;
+      let newCursor = cursor + 24 * 2;
+      let newModels = [
+        ...models,
+        ...(await searchModels({ search, cursor: newCursor })),
+      ];
+      Object.assign(modelsSearchState, {
+        models: newModels,
+        loading: false,
+        loadingMore: false,
+        cursor: newCursor,
+      });
+    } catch (e: any) {
+      modelsSearchState.error = e;
+    }
   }, [cursor, models, search]);
 
   useEffect(() => {

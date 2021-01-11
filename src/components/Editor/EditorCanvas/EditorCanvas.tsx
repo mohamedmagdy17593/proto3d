@@ -94,9 +94,9 @@ function EditorCanvas() {
 function Loader() {
   const { progress } = useProgress();
   return (
-    <Html center>
+    <Html css={{ background: `var(--component-background)` }} center>
       <div css={{ width: '300px' }}>
-        <Progress percent={progress}></Progress>
+        <Progress percent={Math.round(progress)}></Progress>
       </div>
     </Html>
   );

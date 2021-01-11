@@ -53,21 +53,21 @@ function ScaleField({
     <Form.Item label={inputDefinition.label}>
       <Space>
         <InputNumber
-          css={{ width: 80 }}
+          css={{ width: 60 }}
           placeholder="x"
           value={x}
           onChange={number => handleChange({ index: 0, number })}
           min={MIN}
         />
         <InputNumber
-          css={{ width: 80 }}
+          css={{ width: 60 }}
           placeholder="y"
           value={y}
           onChange={number => handleChange({ index: 1, number })}
           min={MIN}
         />
         <InputNumber
-          css={{ width: 80 }}
+          css={{ width: 60 }}
           placeholder="z"
           value={z}
           onChange={number => handleChange({ index: 2, number })}

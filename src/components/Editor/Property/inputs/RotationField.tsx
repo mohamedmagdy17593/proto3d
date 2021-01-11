@@ -51,7 +51,7 @@ function RotationField({
     <Form.Item label={inputDefinition.label}>
       <Space>
         <InputNumber
-          css={{ width: 80 }}
+          css={{ width: 60 }}
           placeholder="x°"
           value={x}
           onChange={number => handleChange({ index: 0, number })}
@@ -60,7 +60,7 @@ function RotationField({
           max={MAX}
         />
         <InputNumber
-          css={{ width: 80 }}
+          css={{ width: 60 }}
           placeholder="y°"
           value={y}
           onChange={number => handleChange({ index: 1, number })}
@@ -69,7 +69,7 @@ function RotationField({
           max={MAX}
         />
         <InputNumber
-          css={{ width: 80 }}
+          css={{ width: 60 }}
           placeholder="z°"
           value={z}
           onChange={number => handleChange({ index: 2, number })}

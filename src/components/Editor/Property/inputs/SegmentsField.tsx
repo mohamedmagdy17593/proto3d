@@ -40,14 +40,14 @@ function Segments({ inputDefinition, properties, onChange }: SegmentsProps) {
     <Form.Item label={inputDefinition.label}>
       <Space>
         <InputNumber
-          css={{ width: 80 }}
+          css={{ width: 60 }}
           placeholder="W"
           value={w}
           onChange={number => handleChange({ index: 0, number })}
           min={MIN}
         />
         <InputNumber
-          css={{ width: 80 }}
+          css={{ width: 60 }}
           placeholder="H"
           value={h}
           onChange={number => handleChange({ index: 1, number })}

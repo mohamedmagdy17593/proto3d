@@ -15,7 +15,7 @@ import PropertyForm from './PropertyForm';
 import { propertiesDefinitions } from './definitions';
 import { editorState } from 'actions/editor/state';
 
-const WIDTH = 300;
+const WIDTH = 250;
 
 function PropertyPanel() {
   let positionRef = useRef<{ x: number; y: number } | null>(null);

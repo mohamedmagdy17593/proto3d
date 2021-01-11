@@ -24,7 +24,7 @@ function NumberField({
   return (
     <Form.Item label={inputDefinition.label}>
       <InputNumber
-        css={{ width: 80 }}
+        css={{ width: 60 }}
         placeholder={placeholder}
         value={value}
         onChange={number => {

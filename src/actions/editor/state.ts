@@ -31,7 +31,7 @@ export function initEditorState(): EditorState {
  * create react proxy
  */
 let localStorageEditorState = window.localStorage.getItem('editor-state');
-export const editorState: EditorState = proxy(
+export const editorState = proxy<EditorState>(
   localStorageEditorState
     ? JSON.parse(localStorageEditorState)
     : initEditorState(),

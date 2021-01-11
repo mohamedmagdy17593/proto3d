@@ -7,12 +7,14 @@ import { proxy, useProxy } from 'valtio';
 import { useCallback, useEffect, useRef } from 'react';
 import _ from 'lodash';
 import { ModelButton } from '../../common/Buttons';
+import { editorUiState } from '../Editor';
 import { ModelButtonsGrid } from './ModelBrowser';
 import { addModel } from 'actions/editor/model';
 import { getModel, searchModels, upload } from 'service/model';
 import { getModelBadgeDotColor, getModelBadgeDotTitle } from 'utils/model';
 import { ApiModel } from 'types/model';
 import { wait } from 'utils/helpers';
+import { Popover } from 'components/common/Popover';
 
 const { Paragraph } = Typography;
 
@@ -158,6 +160,31 @@ interface CustomModelButtonProps {
   model: ApiModel;
 }
 function CustomModelButton({ model }: CustomModelButtonProps) {
+  function handleClick() {
+    switch (model.status) {
+      case 'uploaded': {
+        addModel('custom', {
+          modelUrl: model.gltfUrl!,
+          name: model.name,
+        });
+        break;
+      }
+      case 'not-uploaded': {
+        triggerUpload();
+        break;
+      }
+      case 'uploading': {
+        message.info(
+          `This model is Currently uploading try later maybe it's done`,
+        );
+        break;
+      }
+      case 'error-while-uploading': {
+        message.info(`Failed to upload, We investigate why this is happened`);
+      }
+    }
+  }
+
   async function triggerUpload() {
     let key = model.id;
     try {
@@ -202,52 +229,36 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
     }
   }
 
+  let { splitPaneSize } = useProxy(editorUiState);
+  let popoverLeft = splitPaneSize;
+
   return (
     <Badge
       dot
       title={getModelBadgeDotTitle(model.status)}
       color={getModelBadgeDotColor(model.status)}
     >
-      {/* <Popover
+      <Popover
         mouseEnterDelay={0.5}
+        destroyTooltipOnHide
         overlayClassName="ModelsSearch__popover-overlay"
         content={
           <img css={{ maxWidth: 900 }} src={model.imgLarge} alt={model.name} />
         }
         trigger="hover"
         placement="right"
-      > */}
-      <ModelButton
-        name={model.name}
-        src={model.imgSmall}
-        onClick={() => {
-          switch (model.status) {
-            case 'uploaded': {
-              addModel('custom', {
-                modelUrl: model.gltfUrl!,
-                name: model.name,
-              });
-              break;
-            }
-            case 'not-uploaded': {
-              triggerUpload();
-              break;
-            }
-            case 'uploading': {
-              message.info(
-                `This model is Currently uploading try later maybe it's done`,
-              );
-              break;
-            }
-            case 'error-while-uploading': {
-              message.info(
-                `Failed to upload, We investigate why this is happened`,
-              );
-            }
-          }
+        overlayStyle={{
+          // force left value using !important
+          // @ts-ignore
+          '--force-left': `${popoverLeft}px`,
         }}
-      />
-      {/* </Popover> */}
+      >
+        <ModelButton
+          name={model.name}
+          src={model.imgSmall}
+          onClick={handleClick}
+        />
+      </Popover>
     </Badge>
   );
 }

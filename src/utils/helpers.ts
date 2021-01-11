@@ -38,3 +38,7 @@ export function isScrollable(element: Element) {
     element.scrollHeight > element.clientHeight
   );
 }
+
+export function wait(timeout: number) {
+  return new Promise(resolve => setTimeout(resolve, timeout));
+}

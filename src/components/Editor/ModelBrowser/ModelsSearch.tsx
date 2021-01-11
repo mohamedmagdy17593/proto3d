@@ -2,7 +2,7 @@
 
 import './ModelsSearch.less';
 
-import { Badge, Button, Input, message, Skeleton } from 'antd';
+import { Badge, Button, Input, message, Skeleton, Typography } from 'antd';
 import { proxy, useProxy } from 'valtio';
 import { useCallback, useEffect } from 'react';
 import _ from 'lodash';
@@ -12,6 +12,9 @@ import { addModel } from 'actions/editor/model';
 import { getModel, searchModels, upload } from 'service/model';
 import { getModelBadgeDotColor, getModelBadgeDotTitle } from 'utils/model';
 import { ApiModel } from 'types/model';
+import { wait } from 'utils/helpers';
+
+const { Paragraph } = Typography;
 
 interface ModelsSearchState {
   models: ApiModel[];
@@ -19,11 +22,14 @@ interface ModelsSearchState {
   loading: boolean;
   loadingMore: boolean;
   cursor: number;
+  error: any;
 }
-const modelsSearchState: ModelsSearchState = proxy({
+
+const modelsSearchState = proxy<ModelsSearchState>({
   models: [],
   loading: true,
   loadingMore: false,
+  error: null,
   search: '',
   cursor: 0,
 });
@@ -31,19 +37,23 @@ const modelsSearchState: ModelsSearchState = proxy({
 const debouncedCb = _.debounce(fn => fn(), 500);
 
 function ModelsSearch() {
-  let { search, loading, models, cursor, loadingMore } = useProxy(
+  let { search, loading, error, models, cursor, loadingMore } = useProxy(
     modelsSearchState,
   );
 
   let runSearch = useCallback(async () => {
-    modelsSearchState.loading = true;
-    let models = await searchModels({ search, cursor: 0 });
-    Object.assign(modelsSearchState, {
-      models,
-      loading: false,
-      loadingMore: false,
-      cursor: 0,
-    });
+    try {
+      modelsSearchState.loading = true;
+      let models = await searchModels({ search, cursor: 0 });
+      Object.assign(modelsSearchState, {
+        models,
+        loading: false,
+        loadingMore: false,
+        cursor: 0,
+      });
+    } catch (e: any) {
+      modelsSearchState.error = e;
+    }
   }, [search]);
 
   let loadMore = useCallback(async () => {
@@ -76,8 +86,32 @@ function ModelsSearch() {
         onKeyDown={e => e.stopPropagation()}
         onChange={e => (modelsSearchState.search = e.target.value)}
       />
-      {loading ? (
+      {error ? (
+        <div
+          css={{
+            width: '100%',
+            height: 250,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Paragraph type="danger">Error 😔</Paragraph>
+        </div>
+      ) : loading ? (
         <Skeleton />
+      ) : models.length === 0 ? (
+        <div
+          css={{
+            width: '100%',
+            height: 250,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Paragraph>No Search results</Paragraph>
+        </div>
       ) : (
         <>
           <ModelsSearchResult />
@@ -122,6 +156,7 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
 
       while (true) {
         let refreshModel = await getModel(model.id);
+        // update state of current model
         modelsSearchState.models = modelsSearchState.models?.map(model => {
           if (model.id === refreshModel.id) {
             return refreshModel;
@@ -137,7 +172,7 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
           refreshModel.status === 'uploading' ||
           refreshModel.status === 'not-uploaded'
         ) {
-          await new Promise(resolve => setTimeout(resolve, 3000));
+          await wait(3000);
         } else {
           break;
         }

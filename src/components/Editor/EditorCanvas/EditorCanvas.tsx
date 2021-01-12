@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
 import { Canvas } from 'react-three-fiber';
-import { Html, OrbitControls, Stars, useProgress } from 'drei';
+import { OrbitControls, Stars } from 'drei';
 import { createContext, Suspense, useContext, useRef } from 'react';
 import * as THREE from 'three';
-import { Progress } from 'antd';
 import { useEditorState } from '../../../actions/editor/state';
 import RenderModels from './RenderModels';
 
+import Loader from './Loader';
 import { useCanvasPreventClickWhileDragging } from 'utils/editor';
 
 interface EditorCanvasContextProps {
@@ -88,17 +88,6 @@ function EditorCanvas() {
         </EditorCanvasContext.Provider>
       </Canvas>
     </div>
-  );
-}
-
-function Loader() {
-  const { progress } = useProgress();
-  return (
-    <Html css={{ background: `var(--component-background)` }} center>
-      <div css={{ width: '300px' }}>
-        <Progress percent={Math.round(progress)}></Progress>
-      </div>
-    </Html>
   );
 }
 

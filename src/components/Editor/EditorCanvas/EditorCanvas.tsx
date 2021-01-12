@@ -2,12 +2,10 @@
 
 import { Canvas } from 'react-three-fiber';
 import { OrbitControls, Stars } from 'drei';
-import { createContext, Suspense, useContext, useRef } from 'react';
+import { createContext, useContext, useRef } from 'react';
 import * as THREE from 'three';
 import { useEditorState } from '../../../actions/editor/state';
 import RenderModels from './RenderModels';
-
-import Loader from './Loader';
 import { useCanvasPreventClickWhileDragging } from 'utils/editor';
 
 interface EditorCanvasContextProps {
@@ -82,9 +80,7 @@ function EditorCanvas() {
 
           <pointLight castShadow intensity={0.8} position={[0, 0, 5]} />
 
-          <Suspense fallback={<Loader />}>
-            <RenderModels />
-          </Suspense>
+          <RenderModels />
         </EditorCanvasContext.Provider>
       </Canvas>
     </div>

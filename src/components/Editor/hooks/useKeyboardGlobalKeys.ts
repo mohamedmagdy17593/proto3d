@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { editorState } from 'actions/editor/state';
+import { editorState, useEditorState } from 'actions/editor/state';
 import {
   decreaseControlsSize,
   increaseControlsSize,
@@ -9,8 +9,14 @@ import { isCmdOrCtrlPressed } from 'utils/helpers';
 import { redo, undo } from 'actions/editor/history';
 
 function useKeyboardGlobalKeys() {
+  let { disableActions } = useEditorState();
+
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
+      if (disableActions) {
+        return;
+      }
+
       // undo and redo key bindings
       let isCmdZ = isCmdOrCtrlPressed(e) && (e.key === 'z' || e.key === 'Z');
       if (isCmdZ && e.shiftKey) {
@@ -67,7 +73,7 @@ function useKeyboardGlobalKeys() {
 
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, []);
+  }, [disableActions]);
 }
 
 export default useKeyboardGlobalKeys;

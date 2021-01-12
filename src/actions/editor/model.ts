@@ -21,6 +21,7 @@ interface AddModelArgs {
 }
 export const addModel = actionContainer({
   preform(type: ModelTypes, { modelUrl, name }: AddModelArgs = {}) {
+    console.log('model');
     let id = nanoid();
     let model = createNewModel({ id, type, modelUrl, name });
     let models = [...editorState.models, model];

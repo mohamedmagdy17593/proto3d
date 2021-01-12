@@ -10,6 +10,10 @@ export function actionContainer<F extends (...args: any[]) => any>({
   commitToHistory = false,
 }: ActionContainerArg<F>) {
   return (...args: Parameters<F>) => {
+    if (editorState.disableActions) {
+      return;
+    }
+
     let preformResult = preform(...args);
 
     if (commitToHistory) {

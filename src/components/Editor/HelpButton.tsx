@@ -6,6 +6,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled';
 import { Tooltip } from 'components/common/Popover';
 import { commandKeyText } from 'utils/helpers';
+import { useDisableAction } from 'actions/editor/editor';
 
 function HelpButton() {
   let [show, setShow] = useState(false);
@@ -24,6 +25,7 @@ function HelpButton() {
 
       <Modal
         centered
+        destroyOnClose
         visible={show}
         footer={false}
         onCancel={() => setShow(false)}
@@ -43,6 +45,8 @@ const ShortcutItem = styled('div')({
 });
 
 function HelpList() {
+  useDisableAction();
+
   return (
     <List
       size="small"

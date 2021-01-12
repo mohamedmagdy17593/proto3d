@@ -138,6 +138,15 @@ function ModelsSearch() {
           >
             Load more
           </Button>
+          <Paragraph
+            type="secondary"
+            css={{ marginTop: 8, textAlign: 'center' }}
+          >
+            From{' '}
+            <a href="https://sketchfab.com/" target="_blank" rel="noreferrer">
+              sketchfab
+            </a>
+          </Paragraph>
         </>
       )}
     </>

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { editorState, initEditorState } from './state';
+import { CameraPosition, editorState, initEditorState } from './state';
 import { actionContainer } from './utils';
 
 export const resetEditorState = actionContainer({
@@ -19,3 +19,9 @@ export function useDisableAction() {
     return () => setDisableAction(false);
   }, []);
 }
+
+export const setCameraPosition = actionContainer({
+  preform(cameraPosition: CameraPosition) {
+    editorState.canvasSettings.cameraPosition = cameraPosition;
+  },
+});

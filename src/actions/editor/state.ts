@@ -1,9 +1,15 @@
 import { proxy, snapshot, subscribe, useProxy } from 'valtio';
 import { Model, TransformMode } from '../../types/editor';
 
+export type CameraPosition = {
+  position: [x: number, y: number, z: number];
+  target: [x: number, y: number, z: number];
+};
+
 export interface CanvasSettings {
   showAxis: boolean;
   showStars: boolean;
+  cameraPosition: CameraPosition | null;
 }
 
 export interface EditorState {
@@ -20,6 +26,7 @@ export function initEditorState(): EditorState {
     canvasSettings: {
       showAxis: true,
       showStars: false,
+      cameraPosition: null,
     },
     models: [],
     selectedModelId: null,

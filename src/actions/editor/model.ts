@@ -49,9 +49,11 @@ export const deleteSelectedModel = actionContainer({
   commitToHistory: true,
 });
 
-export function setSelectedModel(id: string) {
-  editorState.selectedModelId = id;
-}
+export const setSelectedModel = actionContainer({
+  preform(id: string | null) {
+    editorState.selectedModelId = id;
+  },
+});
 
 // needs improvements
 export function revertAddingBrokenModel(id: string) {

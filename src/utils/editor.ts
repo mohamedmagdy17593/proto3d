@@ -1,10 +1,12 @@
 import { useEffect, useReducer } from 'react';
 import tinycolor from 'tinycolor2';
-import { TransformControls } from 'drei';
+import { OrbitControls, TransformControls } from 'drei';
 import _ from 'lodash';
 import * as THREE from 'three';
 import { setSelectedModel, useIsSelectedModel } from 'actions/editor/model';
 import { Model } from 'types/editor';
+import { CameraPosition } from 'actions/editor/state';
+import { setCameraPosition } from 'actions/editor/editor';
 
 export function degreeAnglesToRadians<T extends number[]>(angles: T): T {
   return angles.map(THREE.MathUtils.radToDeg) as T;
@@ -183,4 +185,40 @@ export function useCanvasPreventClickWhileDragging({
       canvas?.removeEventListener('mousemove', mousemoveHandler);
     };
   }, [canvasContainerRef]);
+}
+
+const throttleCb = _.throttle(fn => fn(), 300);
+export function saveCameraPositionToEditorState(orbit: OrbitControls) {
+  throttleCb(() => {
+    if (orbit.object?.position && orbit?.target) {
+      let { x: px, y: py, z: pz } = orbit.object.position;
+
+      let { x: tx, y: ty, z: tz } = orbit.target as THREE.Vector3;
+
+      let cameraPosition: CameraPosition = {
+        position: [px, py, pz],
+        target: [tx, ty, tz],
+      };
+
+      setCameraPosition(cameraPosition);
+    }
+  });
+}
+
+export function setCameraPositionToOrbit(
+  orbit: OrbitControls,
+  cameraPosition: CameraPosition,
+) {
+  if (orbit?.object && cameraPosition) {
+    let [px, py, pz] = cameraPosition.position;
+    orbit.object.position.set(px, py, pz);
+
+    let [tx, ty, tz] = cameraPosition.target;
+    //@ts-ignore
+    orbit.target.x = tx;
+    //@ts-ignore
+    orbit.target.y = ty;
+    //@ts-ignore
+    orbit.target.z = tz;
+  }
 }

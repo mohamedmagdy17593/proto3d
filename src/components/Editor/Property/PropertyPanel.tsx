@@ -9,11 +9,11 @@ import {
   updateModelPropertiesWithHistory,
   updateModelProperties,
   useSelectedModel,
+  setSelectedModel,
 } from '../../../actions/editor/model';
 import { Tooltip } from '../../common/Popover';
 import PropertyForm from './PropertyForm';
 import { propertiesDefinitions } from './definitions';
-import { editorState } from 'actions/editor/state';
 
 const WIDTH = 250;
 
@@ -111,7 +111,7 @@ function PropertyPanel() {
             size="large"
             block
             type="dashed"
-            onClick={() => (editorState.selectedModelId = null)}
+            onClick={() => setSelectedModel(null)}
           >
             Deselect
           </Button>

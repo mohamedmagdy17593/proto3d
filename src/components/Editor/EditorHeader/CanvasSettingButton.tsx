@@ -1,11 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
 import { SettingOutlined } from '@ant-design/icons';
+import { Button } from 'antd';
 import { editorState, useEditorState } from '../../../actions/editor/state';
 import { IconCircleButton } from '../../common/Buttons';
 import { Switch } from '../../common/controls';
 import { Form } from '../../common/Form';
 import { Popover, Tooltip } from '../../common/Popover';
+import { resetOrbitControlCameraPosition } from '../EditorCanvas/EditorCanvas';
 
 function CanvasSettingButton() {
   let { canvasSettings } = useEditorState();
@@ -26,6 +28,14 @@ function CanvasSettingButton() {
               checked={canvasSettings.showStars}
               onChange={value => (editorState.canvasSettings.showStars = value)}
             />
+
+            <Button
+              block
+              type="ghost"
+              onClick={() => resetOrbitControlCameraPosition()}
+            >
+              Reset camera position
+            </Button>
           </Form>
         </div>
       }

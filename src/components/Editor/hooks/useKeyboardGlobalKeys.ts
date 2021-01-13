@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { editorState, useEditorState } from 'actions/editor/state';
+import { useEditorState } from 'actions/editor/state';
 import {
   decreaseControlsSize,
   increaseControlsSize,
+  setTransformMode,
 } from 'actions/editor/controls';
 import { deleteSelectedModel } from 'actions/editor/model';
 import { isCmdOrCtrlPressed } from 'utils/helpers';
@@ -39,17 +40,17 @@ function useKeyboardGlobalKeys() {
         switch (e.key) {
           case 'm':
           case 'M': {
-            editorState.transformMode = 'translate';
+            setTransformMode('translate');
             break;
           }
           case 's':
           case 'S': {
-            editorState.transformMode = 'scale';
+            setTransformMode('scale');
             break;
           }
           case 'r':
           case 'R': {
-            editorState.transformMode = 'rotate';
+            setTransformMode('rotate');
             break;
           }
           case '+':

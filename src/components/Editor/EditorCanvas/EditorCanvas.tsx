@@ -106,7 +106,7 @@ function EditorCanvas() {
 
           {canvasSettings.showStars && <Stars />}
 
-          <pointLight castShadow intensity={0.8} position={[0, 0, 5]} />
+          {/* <pointLight castShadow intensity={0.8} position={[0, 0, 5]} /> */}
 
           <RenderModels />
         </EditorCanvasContext.Provider>

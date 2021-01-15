@@ -104,7 +104,10 @@ function HelpList() {
         </ShortcutItem>,
         <ShortcutItem>
           <Text>Clone</Text>
-          <Text keyboard>{commandKeyText}+D</Text>
+          <Text>
+            <Text keyboard>{commandKeyText}+D</Text> /{' '}
+            <Text keyboard>Alt+Drag</Text>
+          </Text>
         </ShortcutItem>,
       ]}
       renderItem={item => (

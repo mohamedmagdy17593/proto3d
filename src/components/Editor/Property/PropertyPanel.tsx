@@ -2,18 +2,20 @@
 
 import { useRef } from 'react';
 import { Rnd } from 'react-rnd';
-import { Button, Divider } from 'antd';
-import { DeleteOutlined } from '@ant-design/icons';
+import { Button, Divider, Space } from 'antd';
+import { CopyOutlined, DeleteOutlined } from '@ant-design/icons';
 import {
   deleteSelectedModel,
   updateModelPropertiesWithHistory,
   updateModelProperties,
   useSelectedModel,
   setSelectedModel,
+  cloneSelectedModel,
 } from '../../../actions/editor/model';
 import { Tooltip } from '../../common/Popover';
 import PropertyForm from './PropertyForm';
 import { propertiesDefinitions } from './definitions';
+import { commandKeyText } from 'utils/helpers';
 
 const WIDTH = 250;
 
@@ -64,10 +66,22 @@ function PropertyPanel() {
           }}
         >
           <strong>{selectedModal.name}</strong>
-          <div>
-            <Tooltip title="Delete">
+          <Space size="small" css={{ marginRight: -6 }}>
+            <Tooltip title={`Clone (${commandKeyText}+D)`}>
               <Button
-                css={{ marginRight: -6 }}
+                size="small"
+                type="link"
+                danger
+                onClick={() => {
+                  cloneSelectedModel();
+                }}
+              >
+                <CopyOutlined />
+              </Button>
+            </Tooltip>
+
+            <Tooltip title="Delete (Backspace)">
+              <Button
                 size="small"
                 type="link"
                 danger
@@ -78,7 +92,7 @@ function PropertyPanel() {
                 <DeleteOutlined />
               </Button>
             </Tooltip>
-          </div>
+          </Space>
         </div>
         <div
           className="PropertyPanel__undraggable-area" // used with cancel prop

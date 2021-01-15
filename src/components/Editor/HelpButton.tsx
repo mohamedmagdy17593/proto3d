@@ -102,6 +102,10 @@ function HelpList() {
           <Text>Redo</Text>
           <Text keyboard>{commandKeyText}+Shift+Z</Text>
         </ShortcutItem>,
+        <ShortcutItem>
+          <Text>Clone</Text>
+          <Text keyboard>{commandKeyText}+D</Text>
+        </ShortcutItem>,
       ]}
       renderItem={item => (
         <List.Item>

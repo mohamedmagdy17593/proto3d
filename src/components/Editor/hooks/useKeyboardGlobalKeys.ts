@@ -5,7 +5,11 @@ import {
   increaseControlsSize,
   setTransformMode,
 } from 'actions/editor/controls';
-import { deleteSelectedModel } from 'actions/editor/model';
+import {
+  cloneSelectedModel,
+  deleteSelectedModel,
+  setSelectedModel,
+} from 'actions/editor/model';
 import { isCmdOrCtrlPressed } from 'utils/helpers';
 import { redo, undo } from 'actions/editor/history';
 
@@ -36,7 +40,16 @@ function useKeyboardGlobalKeys() {
         return;
       }
 
-      if (!isCmdOrCtrlPressed(e)) {
+      if (isCmdOrCtrlPressed(e)) {
+        switch (e.key) {
+          case 'd':
+          case 'D': {
+            e.preventDefault();
+            cloneSelectedModel();
+            break;
+          }
+        }
+      } else {
         switch (e.key) {
           case 'm':
           case 'M': {
@@ -66,6 +79,10 @@ function useKeyboardGlobalKeys() {
           case 'Backspace':
           case 'Delete': {
             deleteSelectedModel();
+            break;
+          }
+          case 'Escape': {
+            setSelectedModel(null);
             break;
           }
         }

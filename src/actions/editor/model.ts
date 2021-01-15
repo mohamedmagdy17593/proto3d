@@ -1,4 +1,5 @@
 import { nanoid } from 'nanoid';
+import _ from 'lodash';
 import { Model, ModelTypes } from '../../types/editor';
 import { editorState, useEditorState } from './state';
 import { actionContainer } from './utils';
@@ -45,6 +46,26 @@ export const deleteSelectedModel = actionContainer({
       model => model.id !== editorState.selectedModelId,
     );
     Object.assign(editorState, { models, selectedModelId: null });
+  },
+  commitToHistory: true,
+});
+
+export const cloneSelectedModel = actionContainer({
+  preform() {
+    let selectedModel = editorState.models.find(
+      model => model.id === editorState.selectedModelId,
+    );
+    if (selectedModel) {
+      let newSelectedMode = _.cloneDeep(selectedModel);
+      newSelectedMode.id = nanoid();
+      let [x, y, z] = newSelectedMode.position;
+      newSelectedMode.position = [x + 1, y + 1, z];
+      let models = [...editorState.models, newSelectedMode];
+      Object.assign(editorState, {
+        models,
+        selectedModelId: newSelectedMode.id,
+      });
+    }
   },
   commitToHistory: true,
 });

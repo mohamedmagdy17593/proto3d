@@ -1,4 +1,5 @@
-import { proxy, snapshot, useProxy } from 'valtio';
+import { proxy, useProxy } from 'valtio';
+import _ from 'lodash';
 import { editorState, EditorState } from './state';
 
 interface HistoryEditorState {
@@ -46,7 +47,7 @@ export function pushToHistory(editorState: EditorState) {
 export function getCleanHistoryState(
   editorState: EditorState,
 ): HistoryEditorState {
-  let { models, selectedModelId } = snapshot(editorState);
+  let { models, selectedModelId } = _.cloneDeep(editorState);
   return { models, selectedModelId };
 }
 
@@ -57,7 +58,7 @@ export function undo() {
 
   historyManager.redoStack.push(historyManager.lastState);
   historyManager.lastState = historyManager.undoStack.pop()!;
-  Object.assign(editorState, historyManager.lastState);
+  Object.assign(editorState, _.cloneDeep(historyManager.lastState));
 }
 
 export function redo() {
@@ -67,5 +68,5 @@ export function redo() {
 
   historyManager.undoStack.push(historyManager.lastState);
   historyManager.lastState = historyManager.redoStack.pop()!;
-  Object.assign(editorState, historyManager.lastState);
+  Object.assign(editorState, _.cloneDeep(historyManager.lastState));
 }

@@ -78,8 +78,6 @@ function EditorCanvas() {
           resetOrbitControlCameraPosition = () => {
             orbitRef.current?.reset?.();
           };
-          //@ts-ignore
-          window.resetOrbitControlCameraPosition = resetOrbitControlCameraPosition;
 
           /**
            * save and set camera positions

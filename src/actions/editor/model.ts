@@ -51,15 +51,20 @@ export const deleteSelectedModel = actionContainer({
 });
 
 export const cloneSelectedModel = actionContainer({
-  preform() {
+  preform(newProperties?: Partial<Model>) {
     let selectedModel = editorState.models.find(
       model => model.id === editorState.selectedModelId,
     );
     if (selectedModel) {
       let newSelectedMode = _.cloneDeep(selectedModel);
       newSelectedMode.id = nanoid();
+
       let [x, y, z] = newSelectedMode.position;
-      newSelectedMode.position = [x + 1, y + 1, z];
+      Object.assign(
+        newSelectedMode,
+        newProperties || { position: [x + 1, y + 1, z] },
+      );
+
       let models = [...editorState.models, newSelectedMode];
       Object.assign(editorState, {
         models,

@@ -200,8 +200,9 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
       message.loading({ content: 'Upload requested', key, duration: 0 });
       await upload(model);
 
+      let refreshModel: ApiModel;
       while (true) {
-        let refreshModel = await getModel(model.id);
+        refreshModel = await getModel(model.id);
         // update state of current model
         modelsSearchState.models = modelsSearchState.models?.map(model => {
           if (model.id === refreshModel.id) {
@@ -224,8 +225,12 @@ function CustomModelButton({ model }: CustomModelButtonProps) {
         }
       }
 
+      addModel('custom', {
+        modelUrl: refreshModel.gltfUrl!,
+        name: refreshModel.name,
+      });
       message.success({
-        content: `${model.name} is uploaded you can click on it to use it`,
+        content: `${model.name} is uploaded and now we add it to the scene`,
         duration: 2,
         key,
       });

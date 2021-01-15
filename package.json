@@ -71,7 +71,8 @@
       }
     },
     "rules": {
-      "import/order": "warn"
+      "import/order": "warn",
+      "no-loop-func": "off"
     }
   },
   "browserslist": {

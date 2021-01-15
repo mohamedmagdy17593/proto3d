@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import { TransformControls } from 'drei';
-import _ from 'lodash';
 import { Object3D } from 'three';
 import * as THREE from 'three';
+import { useThree } from 'react-three-fiber';
 import { useEditorCanvas } from './EditorCanvas';
 import {
+  cloneSelectedModel,
   updateModelPropertiesWithHistory,
   useIsSelectedModel,
 } from 'actions/editor/model';
@@ -18,12 +19,6 @@ import {
 } from 'utils/editor';
 import { useKeyPress } from 'utils/useKeyPress';
 
-// FIXME: we should create new debounced function with every instance of EditorTransformControls component
-// For now we will leave this like that 🤓
-const debouncedMoveCb = _.debounce(fn => fn(), 400);
-const debouncedScaleCb = _.debounce(fn => fn(), 400);
-const debouncedRotateCb = _.debounce(fn => fn(), 400);
-
 interface EditorTransformControlsProps {
   children: React.ReactElement<Object3D>;
   model: Model;
@@ -36,7 +31,12 @@ function EditorTransformControls({
   let isSelected = useIsSelectedModel(model);
   let { orbitRef } = useEditorCanvas();
   let { transformMode, transformControlSize } = useEditorState();
+  let { scene } = useThree();
+
   let isShiftPressed = useKeyPress('Shift');
+  let isAltPressed = useKeyPress('Alt');
+  let actionState = useRef<'rest' | 'dragging' | 'cloned'>('rest');
+  let clonedObjectRef = useRef<any>(null);
 
   let transformRef = useRef<any>();
 
@@ -82,37 +82,90 @@ function EditorTransformControls({
 
   useEffect(() => {
     let controls: TransformControls = transformRef.current;
-    const callback = () => {
-      switch (transformMode) {
-        case 'translate': {
-          debouncedMoveCb(() => {
+
+    let mouseDownHandler = () => {
+      actionState.current = 'dragging';
+      clonedObjectRef.current = controls.object?.clone();
+
+      if (isAltPressed) {
+        scene.add(clonedObjectRef.current);
+        actionState.current = 'cloned';
+      }
+    };
+
+    const mouseUpHandler = () => {
+      if (actionState.current === 'cloned') {
+        switch (transformMode) {
+          case 'translate': {
+            cloneSelectedModel({
+              position: getControls(controls, 'position'),
+            });
+            setControls(controls, 'position', model.position);
+            break;
+          }
+          case 'scale': {
+            cloneSelectedModel({
+              scale: getControls(controls, 'scale'),
+            });
+            setControls(controls, 'scale', model.scale);
+            break;
+          }
+          case 'rotate': {
+            cloneSelectedModel({
+              rotation: getControls(controls, 'rotation'),
+            });
+            setControls(controls, 'rotation', model.rotation);
+            break;
+          }
+        }
+        scene.remove(clonedObjectRef.current);
+      } else {
+        switch (transformMode) {
+          case 'translate': {
             updateModelPropertiesWithHistory(model.id, {
               position: getControls(controls, 'position'),
             });
-          });
-          break;
-        }
-        case 'scale': {
-          debouncedScaleCb(() => {
+            break;
+          }
+          case 'scale': {
             updateModelPropertiesWithHistory(model.id, {
               scale: getControls(controls, 'scale'),
             });
-          });
-          break;
-        }
-        case 'rotate': {
-          debouncedRotateCb(() => {
+            break;
+          }
+          case 'rotate': {
             updateModelPropertiesWithHistory(model.id, {
               rotation: getControls(controls, 'rotation'),
             });
-          });
-          break;
+            break;
+          }
         }
       }
+      actionState.current = 'rest';
     };
-    controls.addEventListener?.('objectChange', callback);
-    return () => controls.removeEventListener?.('objectChange', callback);
-  }, [model.id, transformMode]);
+
+    controls.addEventListener?.('mouseUp', mouseUpHandler);
+    controls.addEventListener?.('mouseDown', mouseDownHandler);
+    return () => {
+      controls.removeEventListener?.('mouseUp', mouseUpHandler);
+      controls.removeEventListener?.('mouseDown', mouseDownHandler);
+    };
+  }, [
+    isAltPressed,
+    model.id,
+    model.position,
+    model.rotation,
+    model.scale,
+    scene,
+    transformMode,
+  ]);
+
+  useEffect(() => {
+    if (isAltPressed && actionState.current === 'dragging') {
+      scene.add(clonedObjectRef.current);
+      actionState.current = 'cloned';
+    }
+  }, [isAltPressed, scene]);
 
   let controls: TransformControls = transformRef.current;
 
